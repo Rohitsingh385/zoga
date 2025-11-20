@@ -1,8 +1,9 @@
 "use client"
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,PropsWithChildren } from 'react';
 import { 
   motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate, 
-  AnimatePresence, useInView
+  AnimatePresence, useInView,useReducedMotion, 
+  useAnimation
 } from 'framer-motion';
 import { 
   Menu, X, Moon, Sun, ArrowRight, 
@@ -10,7 +11,10 @@ import {
   Video, MapPin, Zap, Sparkles, 
   TrendingUp, Activity, Globe, CheckCircle2, 
   ArrowUpRight, Quote, ShieldCheck, Rocket, Users, Layers, Mail, Phone,
-  Cpu, Server, Database, Layout, Send, Star, MousePointer2
+  Cpu, Server, Database, Layout, Send, Star, MousePointer2,
+  Megaphone,
+  Clapperboard,
+  Play
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -19,6 +23,15 @@ import Image from 'next/image';
 const PHONE_NUMBER = "+91 98355 04582";
 const EMAIL = "hello@zoga.agency";
 const ADDRESS = "Ranchi, Jharkhand, India";
+
+const MARQUEE_BRANDS = [
+  { name: "Next.js", icon: Layers },
+  { name: "React", icon: Code2 },
+  { name: "Vercel", icon: Zap },
+  { name: "AWS", icon: Globe },
+  { name: "Shopify", icon: TrendingUp },
+  { name: "Stripe", icon: Activity },
+];
 
 const SERVICES = [
   { 
@@ -53,7 +66,26 @@ const SERVICES = [
     color: "from-green-500 to-emerald-500",
     span: "md:col-span-2"
   },
+
+  // ⭐ Added Services Below
+  { 
+    id: "video",
+    title: "Video Editing", 
+    desc: "Cinematic edits, reels, ads & brand stories built for high engagement.", 
+    icon: Video, 
+    color: "from-rose-500 to-fuchsia-500",
+    span: "md:col-span-1"
+  },
+  { 
+    id: "marketing",
+    title: "Digital Marketing", 
+    desc: "ROI-focused campaigns across Google, Meta, Instagram & YouTube.", 
+    icon: Megaphone, 
+    color: "from-indigo-600 to-blue-500",
+    span: "md:col-span-1"
+  },
 ];
+
 
 const BRANDS = [
   "Google Cloud", "AWS", "Vercel", "Shopify Plus", "React", "Next.js"
@@ -98,7 +130,90 @@ const WHY_US = [
   }
 ];
 
+const DASHBOARD_COLORS = {
+  neon: "from-[#39FF14] to-[#0affd2]",
+  pink: "from-[#FF00C8] to-[#FF6AD5]",
+  cyan: "from-[#00F0FF] to-[#00A2FF]",
+  amber: "from-[#FFB300] to-[#FF7800]",
+};
+  const themes = {
+    neon: { from: "#08f7fe", to: "#09fbd3", text: "#08f7fe" },
+    pink: { from: "#ff1b8d", to: "#ff6ac1", text: "#ff1b8d" },
+    purple: { from: "#6a00ff", to: "#b44cff", text: "#b44cff" },
+    cyan: { from: "#00eaff", to: "#00b7ff", text: "#00eaff" },
+    amber: { from: "#ffb300", to: "#ff7300", text: "#ffb300" },
+    green: { from: "#00ff8f", to: "#00c471", text: "#00ff8f" },
+  };
+
 // --- UI Components ---
+
+const Reveal = ({ children, width = "100%", delay = 0.25 }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-75px" });
+  const mainControls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      mainControls.start("visible");
+    }
+  }, [isInView, mainControls]);
+
+  return (
+    <div ref={ref} style={{ position: "relative", width, overflow: "hidden" }}>
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 75 },
+          visible: { opacity: 1, y: 0 },
+        }}
+        initial="hidden"
+        animate={mainControls}
+        transition={{ duration: 0.5, delay: delay }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+};
+
+type TiltCardProps = PropsWithChildren<{
+  className?: string;
+}>;
+
+/**
+ * Simple TiltCard wrapper
+ * - pointer-based tilt on desktop
+ * - reduces intensity when user prefers reduced motion
+ */
+ const TiltCard = ({ children, className }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useTransform(y, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(x, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const onMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const onLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className={`transition-transform duration-200 ease-out ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 
 const MagneticButton = ({ children, className = "", onClick, variant = "primary" }) => {
   const ref = useRef(null);
@@ -187,12 +302,19 @@ const Navbar = ({ isDark, toggleTheme }) => {
         <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between relative">
           {/* Logo */}
           <a href="#" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 group-hover:shadow-purple-500/40 transition-all">
-               {/* Replaced Zap with Image per request, using placeholder since generic img */}
-               <div className="font-black text-xl">Z</div>
-            </div>
-            <span className="font-bold text-2xl tracking-tight text-slate-900 dark:text-white">Zoga</span>
-          </a>
+  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-purple-500/40 transition-all overflow-hidden">
+    <Image
+      src="/logo.png"
+      alt="Zoga Logo"
+      fill
+      className="object-contain p-1 invert-0 dark:invert text-black"
+    />
+  </div>
+  <span className="font-bold text-2xl tracking-tight text-slate-900 dark:text-white">
+    Zoga
+  </span>
+</a>
+
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
@@ -324,7 +446,7 @@ const Hero = () => {
             Jharkhand's #1 Digital Agency
           </motion.div>
           
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-slate-900 dark:text-white mb-8 leading-[1.1]">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-8 leading-[1.1]">
             We Engineer <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 animate-gradient-x">
               Digital Dominance
@@ -386,86 +508,162 @@ const Hero = () => {
 };
 
 const InteractiveDashboard = () => {
-  const { scrollYProgress } = useScroll();
-  const rotateX = useTransform(scrollYProgress, [0, 0.2], [20, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.2], [0.9, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [0.5, 1]);
+ const [theme, setTheme] = useState(themes.purple);
 
   return (
-    <section className="py-20 px-4 relative perspective-1000">
-      <div className="max-w-6xl mx-auto">
-        <motion.div 
-          style={{ rotateX, scale, opacity, transformStyle: "preserve-3d" }}
-          className="relative bg-slate-900 rounded-[2rem] shadow-2xl border border-slate-800 overflow-hidden aspect-[16/10] md:aspect-[21/9]"
-        >
-          {/* Dashboard UI Simulation */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-[#0a0a12] to-slate-900 z-0" />
-          
-          {/* Top Bar */}
-          <div className="absolute top-0 inset-x-0 h-16 border-b border-white/10 flex items-center px-6 gap-4 z-20 bg-slate-900/50 backdrop-blur-md">
-             <div className="flex gap-2">
-               <div className="w-3 h-3 rounded-full bg-red-500" />
-               <div className="w-3 h-3 rounded-full bg-yellow-500" />
-               <div className="w-3 h-3 rounded-full bg-green-500" />
-             </div>
-             <div className="px-4 py-1.5 rounded-lg bg-white/5 text-xs font-mono text-slate-400 border border-white/5 flex-1 max-w-xs flex items-center gap-2">
-               <Sparkles size={12} className="text-yellow-500" /> admin.zoga.agency
-             </div>
+    <section className="w-full py-10 flex flex-col items-center gap-6">
+      
+      {/* Color Buttons */}
+      <div className="flex flex-wrap justify-center gap-3">
+        {Object.keys(themes).map((key) => (
+          <button
+            key={key}
+            onClick={() => setTheme(themes[key])}
+            className="px-4 py-1.5 rounded-lg text-xs font-semibold border border-white/10 hover:scale-105 active:scale-95 transition"
+            style={{ color: themes[key].text }}
+          >
+            {key.toUpperCase()}
+          </button>
+        ))}
+      </div>
+
+      {/* Dashboard Container */}
+      <div className="perspective-1000 h-[400px] md:h-[500px] flex items-center justify-center w-full px-4">
+        <TiltCard className="w-full max-w-lg aspect-[4/3] relative group">
+
+          {/* Outer Glow */}
+          <div
+            className="absolute inset-0 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-all"
+            style={{
+              background: `linear-gradient(to bottom right, ${theme.from}, ${theme.to})`,
+            }}
+          />
+
+          {/* Main Card */}
+          <div className="relative h-full bg-white dark:bg-[#0a0a12] border border-slate-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+
+            {/* Browser Header */}
+            <div className="h-12 border-b border-slate-100 dark:border-white/5 flex items-center px-4 gap-2 bg-slate-50/50 dark:bg-white/5">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-400" />
+                <div className="w-3 h-3 rounded-full bg-yellow-400" />
+                <div className="w-3 h-3 rounded-full bg-green-400" />
+              </div>
+              <div className="ml-4 px-3 py-1 rounded-md bg-white dark:bg-white/5 text-[10px] font-mono opacity-50 w-full max-w-[200px]">
+                zoga.agency/dashboard
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-4 md:p-6 flex-1 relative">
+
+              {/* Live Badge */}
+              <div className="absolute top-0 right-0 p-4 z-10">
+                <div
+                  className="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1"
+                  style={{ background: `${theme.text}20`, color: theme.text }}
+                >
+                  <div
+                    className="w-1.5 h-1.5 rounded-full animate-pulse"
+                    style={{ background: theme.text }}
+                  />
+                  Live
+                </div>
+              </div>
+
+              <div className="space-y-5">
+                
+                {/* Revenue */}
+                <div className="flex items-end gap-4">
+                  <div>
+                    <p className="text-sm text-slate-500">Total Revenue</p>
+                    <h3 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
+                      $124,500
+                    </h3>
+                  </div>
+                  <span
+                    className="text-sm font-bold pb-1"
+                    style={{ color: theme.text }}
+                  >
+                    +24.5%
+                  </span>
+                </div>
+
+                {/* Graph */}
+                <div className="h-28 md:h-32 flex items-end gap-2">
+                  {[40, 70, 45, 90, 65, 85, 50].map((h, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ height: 0 }}
+                      animate={{ height: `${h}%` }}
+                      transition={{
+                        delay: 0.4 + i * 0.1,
+                        duration: 0.8,
+                        type: "spring",
+                      }}
+                      whileHover={{
+                        scale: 1.1,
+                        opacity: 1,
+                      }}
+                      className="flex-1 rounded-t-md opacity-80 cursor-pointer transition"
+                      style={{
+                        background: `linear-gradient(to top, ${theme.from}, ${theme.to})`,
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {/* Cards */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
+                    <Activity style={{ color: theme.text }} className="mb-2" />
+                    <div className="text-lg font-bold">Active Users</div>
+                    <div className="text-sm opacity-50">1,234 online</div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
+                    <Globe style={{ color: theme.text }} className="mb-2" />
+                    <div className="text-lg font-bold">Global Reach</div>
+                    <div className="text-sm opacity-50">12 Countries</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
-
-          {/* Main Content Grid */}
-          <div className="absolute inset-0 pt-24 px-8 pb-8 grid grid-cols-12 gap-6 z-10">
-             
-             {/* Sidebar */}
-             <div className="col-span-2 hidden md:block space-y-4">
-               {[1,2,3,4].map(i => (
-                 <div key={i} className="h-10 w-full rounded-lg bg-white/5 animate-pulse" style={{ animationDelay: `${i * 0.1}s` }} />
-               ))}
-             </div>
-
-             {/* Main Area */}
-             <div className="col-span-12 md:col-span-10 grid grid-cols-3 gap-6">
-                {/* Hero Card */}
-                <div className="col-span-2 rounded-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/20 p-6 relative overflow-hidden group">
-                   <div className="absolute inset-0 bg-blue-600/10 blur-3xl group-hover:bg-blue-600/20 transition-all duration-500" />
-                   <h3 className="text-sm text-blue-400 font-bold mb-2">Total Revenue (Ranchi HQ)</h3>
-                   <p className="text-4xl font-bold text-white mb-8">₹ 84,50,000</p>
-                   <div className="h-24 flex items-end gap-2">
-                     {[40, 60, 45, 80, 55, 90, 70].map((h, i) => (
-                       <motion.div 
-                         key={i}
-                         initial={{ height: 0 }}
-                         whileInView={{ height: `${h}%` }}
-                         transition={{ duration: 0.5, delay: i * 0.1 }}
-                         className="flex-1 bg-blue-500 rounded-t-sm opacity-80" 
-                       />
-                     ))}
-                   </div>
-                </div>
-
-                {/* Side Card */}
-                <div className="col-span-1 rounded-2xl bg-white/5 border border-white/10 p-6 flex flex-col justify-between">
-                   <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mb-4">
-                     <Users />
-                   </div>
-                   <div>
-                     <p className="text-3xl font-bold text-white">12k+</p>
-                     <p className="text-sm text-slate-400">Active Users</p>
-                   </div>
-                </div>
-
-                {/* Bottom Row */}
-                <div className="col-span-3 h-32 rounded-2xl bg-white/5 border border-white/10 p-6 flex items-center gap-4 overflow-hidden relative">
-                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] animate-shimmer" />
-                   {[1,2,3].map(i => (
-                     <div key={i} className="flex-1 h-full bg-white/5 rounded-xl" />
-                   ))}
-                </div>
-             </div>
-          </div>
-        </motion.div>
+        </TiltCard>
       </div>
     </section>
+  );
+};
+
+const MarqueeSection = () => {
+  return (
+    <div className="py-12 border-y border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-[#050509] overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-8 text-center">
+        <p className="text-sm font-bold uppercase tracking-widest text-slate-400">Trusted by Industry Leaders</p>
+      </div>
+      <div className="relative flex overflow-x-hidden group">
+        <motion.div 
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="flex gap-8 py-4 whitespace-nowrap px-4"
+        >
+          {[...MARQUEE_BRANDS, ...MARQUEE_BRANDS, ...MARQUEE_BRANDS].map((brand, i) => (
+            <div 
+              key={i} 
+              className="flex items-center gap-3 px-6 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 hover:border-blue-500/50 transition-colors min-w-[160px] justify-center"
+            >
+              <brand.icon className="w-5 h-5 text-slate-400" />
+              <span className="font-bold text-slate-700 dark:text-slate-200">{brand.name}</span>
+            </div>
+          ))}
+        </motion.div>
+        {/* Fade Edges */}
+        <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 dark:from-[#050509] to-transparent z-10" />
+        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 dark:from-[#050509] to-transparent z-10" />
+      </div>
+    </div>
   );
 };
 
@@ -498,6 +696,46 @@ const Services = () => (
           </div>
         </motion.div>
       ))}
+    </div>
+  </section>
+);
+
+const VideoProduction = () => (
+  <section id="video" className="py-32 bg-[#000] text-white relative overflow-hidden">
+    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-20" />
+    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
+    
+    <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="flex flex-col md:flex-row justify-between items-end mb-20">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/20 text-red-500 border border-red-600/30 text-xs font-bold uppercase mb-6">
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" /> Live Action
+          </div>
+          <h2 className="text-5xl md:text-6xl font-bold mb-4">Cinematic <br/> Storytelling</h2>
+          <p className="text-slate-400 max-w-md text-lg">From 30-second reels to full-scale brand documentaries. We edit, animate, and produce content that stops the scroll.</p>
+        </div>
+        <MagneticButton className="bg-white text-black hover:bg-slate-200 mt-8 md:mt-0">
+          <Play size={16} className="mr-2 fill-current inline" /> View Showreel
+        </MagneticButton>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-6">
+        {[
+          { t: "Brand Commercials", d: "High-impact ads for TV & Social." },
+          { t: "Motion Graphics", d: "2D/3D animation that explains your product." },
+          { t: "Social Reels", d: "Viral-ready vertical content packages." }
+        ].map((item, i) => (
+          <Reveal key={i} delay={i * 0.2}>
+            <div className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors backdrop-blur-sm group cursor-pointer">
+              <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Clapperboard size={24} />
+              </div>
+              <h3 className="text-xl font-bold mb-2">{item.t}</h3>
+              <p className="text-slate-400 text-sm">{item.d}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
     </div>
   </section>
 );
@@ -732,6 +970,7 @@ const App = () => {
         <MarqueeSection />
         <WhyChooseUs />
         <Services />
+        <VideoProduction />
         <Portfolio />
         <Contact />
       </main>
