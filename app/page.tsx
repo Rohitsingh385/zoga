@@ -145,6 +145,12 @@ const DASHBOARD_COLORS = {
     green: { from: "#00ff8f", to: "#00c471", text: "#00ff8f" },
   };
 
+  const VIDEOS = [
+  { id: "ieSo-WK4DhY", title: "Showreel" },
+  { id: "VpnhhuBUs54", title: "Social Reel" },
+  { id: "Aje2oek3UqY", title: "Documentary" },
+];
+
 // --- UI Components ---
 
 const Reveal = ({ children, width = "100%", delay = 0.25 }) => {
@@ -700,45 +706,104 @@ const Services = () => (
   </section>
 );
 
-const VideoProduction = () => (
-  <section id="video" className="py-32 bg-[#000] text-white relative overflow-hidden">
-    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-20" />
-    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
-    
-    <div className="max-w-7xl mx-auto px-6 relative z-10">
-      <div className="flex flex-col md:flex-row justify-between items-end mb-20">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/20 text-red-500 border border-red-600/30 text-xs font-bold uppercase mb-6">
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" /> Live Action
-          </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-4">Cinematic <br/> Storytelling</h2>
-          <p className="text-slate-400 max-w-md text-lg">From 30-second reels to full-scale brand documentaries. We edit, animate, and produce content that stops the scroll.</p>
-        </div>
-        <MagneticButton className="bg-white text-black hover:bg-slate-200 mt-8 md:mt-0">
-          <Play size={16} className="mr-2 fill-current inline" /> View Showreel
-        </MagneticButton>
-      </div>
+const VideoProduction=()=> {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-      <div className="grid md:grid-cols-3 gap-6">
-        {[
-          { t: "Brand Commercials", d: "High-impact ads for TV & Social." },
-          { t: "Motion Graphics", d: "2D/3D animation that explains your product." },
-          { t: "Social Reels", d: "Viral-ready vertical content packages." }
-        ].map((item, i) => (
-          <Reveal key={i} delay={i * 0.2}>
-            <div className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors backdrop-blur-sm group cursor-pointer">
-              <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Clapperboard size={24} />
-              </div>
-              <h3 className="text-xl font-bold mb-2">{item.t}</h3>
-              <p className="text-slate-400 text-sm">{item.d}</p>
+  return (
+     <section className="py-24 transition-colors bg-white dark:bg-black text-black dark:text-white">
+  <div className="max-w-7xl mx-auto px-6">
+
+    {/* Heading */}
+    <div className="text-center mb-16">
+      <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+        Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-400 dark:to-pink-300">Showreel</span>
+      </h2>
+      <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mt-4 text-lg">
+        A cinematic experience featuring brand films, motion graphics and scroll-stopping visual storytelling.
+      </p>
+    </div>
+
+    {/* Grid */}
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+
+      {/* Main Reel */}
+      <motion.div 
+        className="lg:col-span-3 rounded-3xl overflow-hidden shadow-xl relative group"
+        whileHover={{ scale: 1.015 }}
+        transition={{ type: "spring", stiffness: 200 }}
+      >
+        <div className="relative aspect-video rounded-3xl overflow-hidden">
+          <iframe 
+            className="absolute inset-0 w-full h-full rounded-3xl"
+            src="https://www.youtube.com/embed/ieSo-WK4DhY?rel=0&modestbranding=1"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          />
+
+          {/* Cinematic Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent pointer-events-none" />
+
+          {/* Tag */}
+          <div className="absolute left-6 bottom-6">
+            <div className="px-4 py-2 rounded-xl text-sm font-semibold 
+              bg-white/20 backdrop-blur-md border border-white/30 text-white shadow-lg">
+              🎬 Main Showreel
             </div>
-          </Reveal>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Side Reels */}
+      <div className="lg:col-span-2 grid grid-cols-1 gap-8">
+
+        {[ 
+          "https://www.youtube.com/embed/VpnhhuBUs54?rel=0&modestbranding=1",
+          "https://www.youtube.com/embed/Aje2oek3UqY?rel=0&modestbranding=1"
+        ].map((link, i) => (
+          <motion.div 
+            key={i}
+            whileHover={{ scale: 1.03 }} 
+            transition={{ type: "spring", damping: 18 }}
+            className="rounded-3xl shadow-lg overflow-hidden relative group"
+          >
+            <div className="relative aspect-video rounded-3xl">
+              <iframe 
+                className="absolute inset-0 w-full h-full rounded-3xl"
+                src={link}
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              />
+
+              {/* Glow Overlay */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-50 transition-all bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+            </div>
+          </motion.div>
         ))}
+
       </div>
     </div>
-  </section>
-);
+
+    {/* CTA Button */}
+    <div className="mt-14 text-center">
+      <a 
+        target="_blank"
+        rel="noreferrer"
+        href="https://www.youtube.com/channel/UCsSPdeATMbLkPXeN2Jah8nQ"
+        className="
+          inline-flex items-center gap-2 px-7 py-3 rounded-full text-base font-semibold
+          bg-gradient-to-r from-purple-600 to-pink-500 
+          dark:from-purple-500 dark:to-pink-400
+          text-white shadow-lg shadow-purple-500/30 hover:shadow-pink-500/40
+          transition-all hover:scale-[1.05]"
+      >
+        Visit Channel →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+  );
+}
 
 const WhyChooseUs = () => (
   <section id="why-us" className="py-32 bg-slate-50 dark:bg-[#050509] relative overflow-hidden">
