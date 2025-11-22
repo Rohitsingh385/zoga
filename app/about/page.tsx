@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence, useMotionTemplate, useMotionValue } from 'framer-motion';
 import { 
   ArrowRight, Zap, Globe, Cpu, Award, ChevronDown, Linkedin, ExternalLink, 
   Play, Code, Search, Layout, Smartphone, PenTool, Database, TrendingUp, 
-  RefreshCcw, Monitor, Video, MapPin, Layers, Star, Menu, X, Sun, Moon 
+  RefreshCcw, Monitor, Video, MapPin, Layers, Star, Menu, X, Sun, Moon,
+  ShieldCheck, Rocket, MousePointer2, Gem
 } from 'lucide-react';
 
-// --- GLOBAL UTILITIES & NAVIGATION ---
+// --- GLOBAL UTILITIES ---
 
-// A replacement for Next.js Link to handle client-side state navigation
 const NavLink = ({ to, children, className, setView, active }: any) => (
   <button 
     onClick={() => setView(to)}
@@ -20,18 +20,51 @@ const NavLink = ({ to, children, className, setView, active }: any) => (
 
 // --- ANIMATION COMPONENTS ---
 
-const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
+const FadeIn = ({ children, delay = 0, className }: { children: React.ReactNode; delay?: number, className?: string }) => (
   <motion.div
     initial={{ opacity: 0, y: 40 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.1 }}
+    viewport={{ once: true, amount: 0.2 }}
     transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+    className={className}
   >
     {children}
   </motion.div>
 );
 
-const ParallaxText = ({ children }: { children: string }) => {
+const SpotlightCard = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <div
+      className={`group relative border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 overflow-hidden ${className}`}
+      onMouseMove={handleMouseMove}
+    >
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              650px circle at ${mouseX}px ${mouseY}px,
+              rgba(168, 85, 247, 0.15),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+      <div className="relative h-full">{children}</div>
+    </div>
+  );
+};
+
+const ParallaxText = ({ children, baseVelocity = 100 }: { children: string; baseVelocity?: number }) => {
   return (
     <div className="overflow-hidden flex flex-nowrap whitespace-nowrap select-none pointer-events-none absolute top-1/2 -translate-y-1/2 w-full opacity-[0.03] dark:opacity-[0.05]">
       <motion.div 
@@ -44,17 +77,6 @@ const ParallaxText = ({ children }: { children: string }) => {
     </div>
   );
 };
-
-const MagneticButton = ({ children, onClick, className }: any) => (
-  <motion.button
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    onClick={onClick}
-    className={className}
-  >
-    {children}
-  </motion.button>
-);
 
 // --- DATA SETS ---
 
@@ -122,72 +144,91 @@ const projects = [
   { id: 8, title: 'Fashion Promo', cat: 'video', size: 'small', img: 'https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?q=80&w=1000&auto=format&fit=crop', tags: ['4K', 'Color Grade'] },
 ];
 
+const whyChooseUs = [
+  { icon: Rocket, title: "Velocity Engineering", desc: "We deploy production-grade code 2x faster using our proprietary component library." },
+  { icon: MousePointer2, title: "Psychological UX", desc: "Interfaces designed using behavioral science to maximize conversion rates." },
+  { icon: ShieldCheck, title: "Bulletproof Security", desc: "Enterprise-grade security protocols woven into every line of code." },
+  { icon: Gem, title: "Premium Aesthetics", desc: "Visuals that don't just look good—they feel expensive and authoritative." }
+];
+
 // --- PAGE COMPONENTS ---
 
-// 1. ABOUT PAGE COMPONENT
+// 1. ABOUT PAGE COMPONENT (REMASTERED)
 const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
-  const yHero = useTransform(scrollYProgress, [0, 0.5], ["0%", "30%"]);
+  
+  const yHero = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const yOrb = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+  const rotateOrb = useTransform(scrollYProgress, [0, 1], [0, 45]);
   const [activeFAQ, setActiveFAQ] = useState<number | null>(0);
 
   return (
-    <div ref={containerRef} className="pb-24 overflow-hidden">
-      {/* Hero */}
-      <section className="relative h-[90vh] flex flex-col justify-center items-center px-6 overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-40 dark:opacity-20 pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-purple-600/30 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen animate-pulse" />
-            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-500/30 rounded-full blur-[100px] mix-blend-multiply dark:mix-blend-screen animate-pulse delay-1000" />
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay" />
-        </div>
+    <div ref={containerRef} className="pb-24 overflow-hidden bg-zinc-50 dark:bg-black transition-colors duration-700">
+      
+      {/* Background Noise Texture */}
+      <div className="fixed inset-0 pointer-events-none opacity-20 z-0 mix-blend-overlay" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
 
-        <motion.div style={{ y: yHero }} className="relative z-10 max-w-5xl mx-auto text-center">
+      {/* --- HERO SECTION: PARALLAX & ALIVE --- */}
+      <section className="relative h-screen flex flex-col justify-center items-center px-6 overflow-hidden">
+        {/* Animated Orbs */}
+        <motion.div 
+            style={{ y: yOrb, rotate: rotateOrb }}
+            className="absolute top-1/4 right-0 w-[800px] h-[800px] bg-gradient-to-br from-purple-600/30 to-blue-600/10 rounded-full blur-[120px] pointer-events-none mix-blend-multiply dark:mix-blend-screen" 
+        />
+        <motion.div 
+            style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "20%"]), x: "-50%" }}
+            className="absolute bottom-[-20%] left-0 w-[600px] h-[600px] bg-gradient-to-tr from-cyan-500/20 to-purple-500/20 rounded-full blur-[100px] pointer-events-none" 
+        />
+
+        <motion.div style={{ y: yHero }} className="relative z-10 max-w-6xl mx-auto text-center">
           <FadeIn>
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-zinc-300 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md mb-8 shadow-sm">
-               <span className="relative flex h-2 w-2">
+            <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-zinc-300 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl mb-12 shadow-lg">
+               <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
                </span>
                <span className="text-xs font-bold text-zinc-600 dark:text-zinc-300 uppercase tracking-widest">
-                  Global Digital Architects
+                  System Online // Global Reach
                </span>
             </div>
           </FadeIn>
 
-          <motion.h1 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-zinc-900 dark:text-white mb-8 leading-[1]"
-          >
-            We don't just write code. <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-500">
-               We write the future.
+          <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter text-zinc-900 dark:text-white mb-8 leading-[0.85]">
+            <span className="block overflow-hidden">
+               <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="block">BEYOND</motion.span>
             </span>
-          </motion.h1>
+            <span className="block overflow-hidden text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-500">
+               <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }} className="block">THE CODE</motion.span>
+            </span>
+          </h1>
 
-          <FadeIn delay={0.2}>
-            <p className="max-w-3xl mx-auto text-lg md:text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed font-light">
-              Zoga is where <b className="text-zinc-900 dark:text-white">art meets algorithm</b>. Founded on the belief that a website should be a living, breathing extension of your brand, we merge cinema-grade visuals with enterprise-grade engineering.
+          <FadeIn delay={0.3}>
+            <p className="max-w-3xl mx-auto text-xl md:text-2xl text-zinc-600 dark:text-zinc-400 leading-relaxed font-light">
+              We are the architects of the new internet. Merging 
+              <span className="font-bold text-zinc-900 dark:text-white"> chaotic art </span> 
+              with 
+              <span className="font-bold text-zinc-900 dark:text-white"> disciplined engineering </span> 
+              to build brands that dominate.
             </p>
           </FadeIn>
         </motion.div>
       </section>
 
-      {/* Philosophy */}
-      <section className="relative py-24 px-6 border-y border-zinc-200 dark:border-zinc-900/50 bg-white dark:bg-zinc-900/20">
-        <ParallaxText>PHILOSOPHY</ParallaxText>
-        <div className="max-w-6xl mx-auto relative z-10 grid gap-20">
+      {/* --- PHILOSOPHY: SCROLL ANIMATED --- */}
+      <section className="relative py-32 px-6 border-y border-zinc-200 dark:border-zinc-900/50 bg-white/50 dark:bg-zinc-900/20 backdrop-blur-sm">
+        <ParallaxText baseVelocity={-2}>PHILOSOPHY</ParallaxText>
+        <div className="max-w-6xl mx-auto relative z-10 grid gap-32">
              {[
                 { title: "Obsessive Precision.", text: "Average is a disease. We cure it with pixel-perfect engineering and SEO strategies that don't just rank, they rule." },
                 { title: "Cinematic Motion.", text: "Static is dead. We breathe life into UI with physics-based animations that feel liquid, responsive, and alive." },
              ].map((item, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
-                    <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center border-l-4 border-purple-500 pl-8 md:pl-12 hover:pl-16 transition-all duration-500">
-                        <h3 className="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white w-full md:w-1/2 leading-tight">
+                    <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center border-l-4 border-purple-500 pl-8 md:pl-12 hover:pl-16 transition-all duration-500 cursor-none">
+                        <h3 className="text-5xl md:text-7xl font-black text-zinc-900 dark:text-white w-full md:w-1/2 leading-[0.9] tracking-tight">
                             {item.title}
                         </h3>
-                        <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 w-full md:w-1/2 leading-relaxed">
+                        <p className="text-lg md:text-2xl text-zinc-600 dark:text-zinc-400 w-full md:w-1/2 leading-relaxed font-light">
                             {item.text}
                         </p>
                     </div>
@@ -196,8 +237,48 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
         </div>
       </section>
 
-      {/* Impact */}
-      <section className="py-32 px-6 bg-zinc-100 dark:bg-[#0a0a0a] overflow-hidden">
+      {/* --- NEW SECTION: WHY CHOOSE US (HOLOGRAPHIC GRID) --- */}
+      <section className="py-32 px-6 bg-zinc-100 dark:bg-black relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10">
+            <FadeIn>
+                <div className="text-center mb-24">
+                    <h2 className="text-5xl md:text-6xl font-black text-zinc-900 dark:text-white mb-6 tracking-tighter">
+                        The Zoga <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">Advantage</span>
+                    </h2>
+                    <p className="text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto">
+                        Why industry leaders trust us with their digital soul.
+                    </p>
+                </div>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {whyChooseUs.map((item, i) => (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1, duration: 0.6 }}
+                    >
+                        <SpotlightCard className="rounded-3xl p-10 h-full flex flex-col justify-between hover:shadow-2xl hover:shadow-purple-500/10 transition-shadow duration-500">
+                            <div className="mb-6 w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-purple-600">
+                                <item.icon size={32} strokeWidth={1.5} />
+                            </div>
+                            <div>
+                                <h3 className="text-3xl font-bold text-zinc-900 dark:text-white mb-4">{item.title}</h3>
+                                <p className="text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                                    {item.desc}
+                                </p>
+                            </div>
+                        </SpotlightCard>
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+      </section>
+
+      {/* --- IMPACT SECTION --- */}
+      <section className="py-32 px-6 bg-zinc-50 dark:bg-[#050505] overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <FadeIn>
              <h2 className="text-4xl md:text-5xl font-bold text-center mb-20 text-zinc-900 dark:text-white">
@@ -206,7 +287,6 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
           </FadeIn>
           
           <div className="relative">
-             <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-zinc-300 dark:via-zinc-700 to-transparent hidden md:block" />
              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                 {[
                   { icon: Globe, val: "45+", label: "Countries Reached", sub: "Global digital footprint" },
@@ -224,10 +304,7 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
                     className="relative bg-white dark:bg-zinc-900 p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-2xl z-10 group"
                   >
                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
-                     <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded-2xl flex items-center justify-center mb-6 text-purple-500 group-hover:text-white group-hover:bg-purple-500 transition-colors duration-300">
-                        <stat.icon size={24} />
-                     </div>
-                     <h3 className="text-5xl font-black text-zinc-900 dark:text-white mb-2">{stat.val}</h3>
+                     <h3 className="text-6xl font-black text-zinc-900 dark:text-white mb-2">{stat.val}</h3>
                      <p className="text-lg font-bold text-zinc-700 dark:text-zinc-300">{stat.label}</p>
                      <p className="text-sm text-zinc-500 dark:text-zinc-500 mt-2">{stat.sub}</p>
                   </motion.div>
@@ -237,7 +314,7 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
         </div>
       </section>
 
-      {/* Team */}
+      {/* --- TEAM SECTION --- */}
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <FadeIn>
@@ -265,10 +342,6 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
               >
                 <div className="aspect-square rounded-xl overflow-hidden mb-4 relative">
                    <img src={member.img} alt={member.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                      <Linkedin className="text-white hover:text-blue-400 cursor-pointer w-4 h-4" />
-                      <ExternalLink className="text-white hover:text-purple-400 cursor-pointer w-4 h-4" />
-                   </div>
                 </div>
                 <h3 className="font-bold text-zinc-900 dark:text-white text-sm">{member.name}</h3>
                 <div className="flex flex-wrap gap-1 mt-2">
@@ -284,7 +357,7 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* --- FAQ --- */}
       <section className="py-24 px-6 bg-zinc-50 dark:bg-black border-t border-zinc-200 dark:border-zinc-900">
          <div className="max-w-4xl mx-auto">
             <FadeIn>
@@ -328,7 +401,7 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
          </div>
       </section>
 
-      {/* CTA */}
+      {/* --- CTA --- */}
       <section className="py-20 px-6 bg-zinc-900 dark:bg-white text-white dark:text-black mt-12">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
            <div className="md:w-1/2 text-left">
@@ -342,17 +415,12 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
            
            <div className="md:w-1/2 flex flex-col items-start md:items-end gap-6">
               <div className="w-full md:w-auto">
-                 <MagneticButton
+                 <button
                     onClick={() => setView('contact')}
-                    className="w-full md:w-auto px-10 py-5 bg-white dark:bg-black text-black dark:text-white rounded-full text-xl font-bold flex items-center justify-center gap-4 hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] transition-shadow"
+                    className="w-full md:w-auto px-10 py-5 bg-white dark:bg-black text-black dark:text-white rounded-full text-xl font-bold flex items-center justify-center gap-4 hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] transition-shadow hover:scale-105 transform duration-300"
                  >
                     Start Project <Zap fill="currentColor" />
-                 </MagneticButton>
-              </div>
-              
-              <div className="flex gap-8 text-sm font-medium text-zinc-400 dark:text-zinc-600">
-                 <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /> Taking New Clients</span>
-                 <span>avg. reply 2 hrs</span>
+                 </button>
               </div>
            </div>
         </div>
@@ -365,7 +433,6 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
 const PortfolioPage = ({ setView }: { setView: (view: string) => void }) => {
   const [filter, setFilter] = useState('all');
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.cat === filter);
-  const activeCategory = portfolioCategories.find(c => c.id === filter);
 
   return (
     <div className="pt-24 pb-24 min-h-screen">
@@ -519,6 +586,8 @@ export default function App() {
   const [view, setView] = useState('about');
   const [darkMode, setDarkMode] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   // Simple scroll to top on view change
   useEffect(() => {
@@ -529,6 +598,9 @@ export default function App() {
   return (
     <div className={`min-h-screen transition-colors duration-700 ${darkMode ? 'bg-[#050505] text-white' : 'bg-zinc-50 text-zinc-900'} ${darkMode ? 'dark' : ''}`}>
       
+      {/* Global Scroll Progress */}
+      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 origin-left z-50" style={{ scaleX }} />
+
       {/* Navigation Bar */}
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div className="max-w-7xl mx-auto bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-full px-6 py-3 flex items-center justify-between shadow-lg">
