@@ -1,33 +1,38 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Sun, Moon, Menu, X, ArrowRight, Globe, Smartphone, 
-  Video, BarChart, PenTool, Search, MapPin, Zap, 
-  Terminal, MousePointer2, Hexagon, Fingerprint, Activity,
-  CheckCircle2, MoveRight, Heart, Users, Globe2, Sparkles,
-  ExternalLink, Code2, Cpu
+  Sun, Moon, Menu, X, ArrowRight, 
+  Video, BarChart, Search, MapPin, Zap, 
+   MousePointer2, Hexagon, Fingerprint, Activity,
+   MoveRight, Heart, Users, Globe2, Sparkles,
+   Code2, Cpu
 } from 'lucide-react';
 
 // --- PERFORMANCE OPTIMIZED COMPONENTS ---
 
 // 1. Optimized Nav Link
-const NavLink = ({ to, children, setView, active }) => (
-  <button 
+interface NavLinkProps {
+  to: string;
+  children: React.ReactNode;
+  setView: (view: string) => void;
+  active: boolean;
+}
+
+const NavLink: React.FC<NavLinkProps> = ({ to, children, setView, active }) => (
+  <button
     onClick={() => setView(to)}
-    className={`relative px-4 py-2 text-sm uppercase tracking-widest font-bold transition-all duration-300 group ${
-      active 
-        ? 'text-black dark:text-white' 
-        : 'text-zinc-500 hover:text-black dark:hover:text-white'
+    className={`px-4 py-2 transition-colors ${
+      active ? "text-purple-500" : "text-zinc-700 dark:text-zinc-300"
     }`}
   >
     {children}
-    <span className={`absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-purple-600 to-cyan-500 transition-all duration-300 ${active ? 'w-full' : 'w-0 group-hover:w-1/2'}`} />
   </button>
 );
 
+
 // 2. Intersection Observer Hook
 const useInView = (threshold = 0.1) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
@@ -47,14 +52,26 @@ const useInView = (threshold = 0.1) => {
   return [ref, isInView];
 };
 
-const FadeIn = ({ children, delay = 0, className = "" }) => {
-  const [ref, isInView] = useInView();
+
+
+interface FadeInProps {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}
+
+const FadeIn: React.FC<FadeInProps> = ({ children, delay = 0, className = "" }) => {
+  const [ref, isInView] = useInView() as [
+    React.RefObject<HTMLDivElement>, 
+    boolean
+  ];
+
   return (
-    <div 
-      ref={ref} 
+    <div
+      ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
       className={`transition-all duration-700 ease-out transform ${
-        isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       } ${className}`}
     >
       {children}
@@ -63,104 +80,177 @@ const FadeIn = ({ children, delay = 0, className = "" }) => {
 };
 
 // 3. Updated "Service Row" with Snapshot & Colors
-const ServiceRow = ({ number, title, description, tags, icon: Icon, color, softColor, snapshot }) => {
+
+interface SnapshotData {
+  label: string;
+  value: string;
+  sub: string;
+  button: string;
+}
+
+interface ServiceRowProps {
+  number: number;
+  title: string;
+  description: string;
+  tags: string[];
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  color: string;
+  softColor: string;
+  snapshot: SnapshotData;
+}
+
+const ServiceRow: React.FC<ServiceRowProps> = ({
+  number,
+  title,
+  description,
+  tags,
+  icon: Icon,
+  color,
+  softColor,
+  snapshot,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div 
+    <div
       className="border-b border-zinc-200 dark:border-zinc-800 group"
-
       onClick={() => setIsOpen(!isOpen)}
     >
-      <div className={`py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 px-4 transition-all duration-300 cursor-pointer ${isOpen ? 'bg-zinc-50 dark:bg-zinc-900/40' : 'hover:bg-zinc-50 dark:hover:bg-zinc-900/20'}`}>
+      <div
+        className={`py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 px-4 transition-all duration-300 cursor-pointer ${
+          isOpen
+            ? "bg-zinc-50 dark:bg-zinc-900/40"
+            : "hover:bg-zinc-50 dark:hover:bg-zinc-900/20"
+        }`}
+      >
+        {/* Left */}
         <div className="flex items-center gap-6 md:w-1/3">
-          <span className={`font-mono text-sm transition-colors ${isOpen ? 'text-black dark:text-white font-bold' : 'text-zinc-400'}`}>0{number}</span>
-          <h3 className={`text-2xl md:text-3xl font-black uppercase tracking-tight transition-colors ${isOpen ? `text-transparent bg-clip-text bg-gradient-to-r ${color}` : 'text-zinc-900 dark:text-white'}`}>
+          <span
+            className={`font-mono text-sm transition-colors ${
+              isOpen
+                ? "text-black dark:text-white font-bold"
+                : "text-zinc-400"
+            }`}
+          >
+            0{number}
+          </span>
+
+          <h3
+            className={`text-2xl md:text-3xl font-black uppercase tracking-tight transition-colors ${
+              isOpen
+                ? `text-transparent bg-clip-text bg-gradient-to-r ${color}`
+                : "text-zinc-900 dark:text-white"
+            }`}
+          >
             {title}
           </h3>
         </div>
-        
+
+        {/* Middle */}
         <div className="flex items-center gap-4 md:w-1/3 justify-start md:justify-center">
-          <div className={`transition-transform duration-500 text-zinc-400 ${isOpen ? 'rotate-12 scale-110 text-white' : ''}`}>
-             <Icon size={24} className={isOpen ? "text-black dark:text-white" : ""} />
+          <div
+            className={`transition-transform duration-500 text-zinc-400 ${
+              isOpen ? "rotate-12 scale-110 text-white" : ""
+            }`}
+          >
+            <Icon
+              size={24}
+              className={isOpen ? "text-black dark:text-white" : ""}
+            />
           </div>
-          <span className={`text-xs font-bold tracking-widest uppercase transition-opacity duration-300 ${isOpen ? 'opacity-0' : 'opacity-50'}`}>
-             Click to Expand
+
+          <span
+            className={`text-xs font-bold uppercase tracking-widest transition-opacity duration-300 ${
+              isOpen ? "opacity-0" : "opacity-50"
+            }`}
+          >
+            Click to Expand
           </span>
         </div>
 
+        {/* Right */}
         <div className="md:w-1/3 flex justify-end">
-           <div className={`w-10 h-10 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-black text-white dark:bg-white dark:text-black rotate-90' : ''}`}>
-              <ArrowRight size={18} />
-           </div>
+          <div
+            className={`w-10 h-10 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center transition-all duration-300 ${
+              isOpen
+                ? "bg-black text-white dark:bg-white dark:text-black rotate-90"
+                : ""
+            }`}
+          >
+            <ArrowRight size={18} />
+          </div>
         </div>
       </div>
-      
-      {/* Expanded Snapshot Content */}
-      <div className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+
+      {/* EXPANDED CONTENT */}
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
         <div className="py-8 px-4 md:pl-20 grid md:grid-cols-12 gap-8 bg-zinc-50/50 dark:bg-zinc-900/20">
           
-          {/* Text Content */}
+          {/* Description */}
           <div className="md:col-span-7 space-y-6">
             <p className="text-lg text-zinc-600 dark:text-zinc-300 leading-relaxed font-medium">
               {description}
             </p>
+
             <div className="flex flex-wrap gap-2">
               {tags.map((tag, i) => (
-                <span key={i} className="px-3 py-1 text-xs font-bold uppercase border border-zinc-300 dark:border-zinc-700 rounded-full text-zinc-500 bg-white dark:bg-zinc-800">
+                <span
+                  key={i}
+                  className="px-3 py-1 text-xs font-bold uppercase border border-zinc-300 dark:border-zinc-700 rounded-full text-zinc-500 bg-white dark:bg-zinc-800"
+                >
                   {tag}
                 </span>
               ))}
             </div>
           </div>
 
-          {/* Snapshot / Mini Visual */}
-{/* Snapshot / Mini Visual */}
-<div
-  className="md:col-span-5 flex flex-col justify-between h-full min-h-[160px] 
-             p-6 rounded-2xl relative overflow-hidden group/card
-             border border-zinc-200 dark:border-zinc-700 shadow-xl
-             bg-transparent dark:bg-transparent"
->
-  {/* Soft gradient tint */}
-  <div
-    className={`absolute inset-0 bg-gradient-to-br ${softColor} 
-                opacity-80 blur-xl pointer-events-none`}
-  />
+          {/* Snapshot */}
+          <div
+            className="md:col-span-5 flex flex-col justify-between h-full min-h-[160px] p-6 rounded-2xl relative overflow-hidden group/card border border-zinc-200 dark:border-zinc-700 shadow-xl"
+          >
+            {/* Glow Background */}
+            <div
+              className={`absolute inset-0 bg-gradient-to-br ${softColor} opacity-80 blur-xl pointer-events-none`}
+            />
 
-  {/* Content */}
-  <div className="relative z-10">
-    <div className="flex items-center gap-2 mb-2 
-                    text-xs font-bold uppercase tracking-wider opacity-70">
-      <Sparkles size={12} /> {snapshot.label}
-    </div>
+            {/* Foreground Content */}
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-wider opacity-70">
+                <Sparkles size={12} /> {snapshot.label}
+              </div>
 
-    <div className="text-4xl font-black mb-1">{snapshot.value}</div>
+              <div className="text-4xl font-black mb-1">{snapshot.value}</div>
 
-    <div className="text-sm text-zinc-600 dark:text-zinc-300">
-      {snapshot.sub}
-    </div>
-  </div>
+              <div className="text-sm text-zinc-600 dark:text-zinc-300">
+                {snapshot.sub}
+              </div>
+            </div>
 
-  <button
-    className="relative z-10 mt-4 w-full py-3 rounded-xl 
-               border border-zinc-300 dark:border-zinc-600 
-               bg-white/40 dark:bg-white/10 backdrop-blur-sm
-               hover:bg-black hover:text-white 
-               dark:hover:bg-white dark:hover:text-black  
-               transition-all font-bold text-sm 
-               flex items-center justify-center gap-2 
-               group-hover/card:scale-[1.03]"
-  >
-    {snapshot.button} <ArrowRight size={14} />
-  </button>
-</div>
-
+            {/* Button */}
+            <button
+              className="relative z-10 mt-4 w-full py-3 rounded-xl 
+                         border border-zinc-300 dark:border-zinc-600 
+                         bg-white/40 dark:bg-white/10 backdrop-blur-sm
+                         hover:bg-black hover:text-white 
+                         dark:hover:bg-white dark:hover:text-black  
+                         transition-all font-bold text-sm 
+                         flex items-center justify-center gap-2 
+                         group-hover/card:scale-[1.03]"
+            >
+              {snapshot.button} <ArrowRight size={14} />
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
+
 
 // --- MAIN APP ---
 
@@ -371,9 +461,9 @@ const servicesList = [
                    <div className="group p-6 rounded-2xl bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-colors shadow-lg">
                       <div className="flex gap-4 mb-4">
                         <div className="p-3 bg-red-100 dark:bg-red-900/30 text-red-500 rounded-xl"><Fingerprint /></div>
-                        <h4 className="text-xl font-bold">The "Zombie" Template</h4>
+                        <h4 className="text-xl font-bold">The &quot;Zombie&quot; Template</h4>
                       </div>
-                      <p className="text-zinc-600 dark:text-zinc-400 pl-14">Your competitors are using the same $50 themes. It's lifeless. We build custom identities that have a pulse.</p>
+                      <p className="text-zinc-600 dark:text-zinc-400 pl-14">Your competitors are using the same $50 themes. It&apos;s lifeless. We build custom identities that have a pulse.</p>
                    </div>
                    <div className="group p-6 rounded-2xl bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 hover:border-orange-500/50 transition-colors shadow-lg">
                       <div className="flex gap-4 mb-4">
@@ -461,7 +551,7 @@ const servicesList = [
                        With Details.
                     </h2>
                     <p className="text-lg text-zinc-500 dark:text-zinc-400 mb-8 leading-relaxed">
-                       Technology is cold. We bring the heat. Zora isn't just a collection of code; it's a team of perfectionists who care deeply about your success. We don't hide behind account managers—you talk to the builders.
+                       Technology is cold. We bring the heat. Zora isn&apos;t just a collection of code; it&apos;s a team of perfectionists who care deeply about your success. We don&apos;t hide behind account managers—you talk to the builders.
                     </p>
                     <div className="flex gap-4">
                        <div className="flex -space-x-4">
@@ -589,7 +679,7 @@ const servicesList = [
                       READY TO <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">ASCEND?</span>
                    </h2>
                    <p className="text-xl md:text-2xl text-indigo-200 mb-12 max-w-2xl mx-auto">
-                      Your competition isn't waiting. Neither should you.
+                      Your competition isn&apos;t waiting. Neither should you.
                    </p>
                    
                    <button className="group relative inline-flex items-center gap-4 px-12 py-6 bg-white text-black rounded-full font-black text-xl hover:scale-105 transition-all duration-300 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.6)]">
@@ -619,8 +709,13 @@ const servicesList = [
 }
 
 // Icon helper
-const Trophy = ({ size, className }) => (
-  <svg 
+const Trophy = ({
+  size,
+  className,
+}: {
+  size?: number
+  className?: string
+}) => (  <svg 
     xmlns="http://www.w3.org/2000/svg" 
     width={size} 
     height={size} 
