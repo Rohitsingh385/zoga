@@ -6,6 +6,7 @@ import {
   AnimatePresence, useInView,useReducedMotion, 
   useAnimation
 } from 'framer-motion';
+
 import { 
   Menu, X, Moon, Sun, ArrowRight, 
   Code2, Smartphone, Palette, LineChart, 
@@ -204,7 +205,7 @@ const HomeAbout=()=> {
           </h2>
           
           <p className="text-slate-400 text-lg mb-6 leading-relaxed">
-            Zoga is a new-age digital engineering lab. We bridge the gap between aesthetic perfection and technical robustness. While others use templates, we forge custom digital environments tailored to your brand's DNA.
+            Zoga is a new-age digital engineering lab. We bridge the gap between aesthetic perfection and technical robustness. While others use templates, we forge custom digital environments tailored to your brand&apos;s DNA.
           </p>
           
           <p className="text-slate-400 text-lg mb-8 leading-relaxed">
@@ -394,7 +395,7 @@ const REVIEWS = [
 ];
 
 const Reveal = ({ children, width = "100%", delay = 0.25 }: RevealProps) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref, { once: true, margin: "-75px" });
   const mainControls = useAnimation();
 
@@ -421,9 +422,6 @@ const Reveal = ({ children, width = "100%", delay = 0.25 }: RevealProps) => {
   );
 };
 
-type TiltCardProps = PropsWithChildren<{
-  className?: string;
-}>;
 
 interface ValueItem {
   icon: IconType;
@@ -440,14 +438,20 @@ interface ValueCard3DProps {
  * - pointer-based tilt on desktop
  * - reduces intensity when user prefers reduced motion
  */
- const TiltCard = ({ children, className }) => {
+
+interface TiltCardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const TiltCard = ({ children, className = "" }: TiltCardProps) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
   const rotateX = useTransform(y, [-0.5, 0.5], ["10deg", "-10deg"]);
   const rotateY = useTransform(x, [-0.5, 0.5], ["-10deg", "10deg"]);
 
-  const onMove = (e) => {
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     x.set((e.clientX - rect.left) / rect.width - 0.5);
     y.set((e.clientY - rect.top) / rect.height - 0.5);
@@ -470,20 +474,38 @@ interface ValueCard3DProps {
   );
 };
 
+interface MagneticButtonProps {
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+  variant?: "primary" | "secondary";
+}
 
-const MagneticButton = ({ children, className = "", onClick, variant = "primary" }) => {
-  const ref = useRef(null);
+const MagneticButton = ({
+  children,
+  className = "",
+  onClick,
+  variant = "primary",
+}: MagneticButtonProps) => {
+  const ref = useRef<HTMLButtonElement | null>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  const handleMouse = (e) => {
+  const handleMouse = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!ref.current) return; // FIX: prevents null errors
+
     const { clientX, clientY } = e;
     const { height, width, left, top } = ref.current.getBoundingClientRect();
-    setPosition({ x: (clientX - (left + width / 2)) * 0.2, y: (clientY - (top + height / 2)) * 0.2 });
+
+    setPosition({
+      x: (clientX - (left + width / 2)) * 0.2,
+      y: (clientY - (top + height / 2)) * 0.2,
+    });
   };
 
-  const styles = variant === "primary" 
-    ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-lg shadow-indigo-500/20"
-    : "bg-transparent border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-white/5";
+  const styles =
+    variant === "primary"
+      ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-lg shadow-indigo-500/20"
+      : "bg-transparent border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-white/5";
 
   return (
     <motion.button
@@ -500,9 +522,25 @@ const MagneticButton = ({ children, className = "", onClick, variant = "primary"
   );
 };
 
-const SectionHeading = ({ children, subtitle, align = "center" }) => (
-  <div className={`mb-16 ${align === "center" ? "text-center" : "text-left"} max-w-4xl mx-auto px-4`}>
-    <motion.h2 
+
+interface SectionHeadingProps {
+  children: React.ReactNode;
+  subtitle?: string;
+  align?: "center" | "left";
+}
+
+
+const SectionHeading = ({
+  children,
+  subtitle,
+  align = "center",
+}: SectionHeadingProps) => (
+  <div
+    className={`mb-16 ${
+      align === "center" ? "text-center" : "text-left"
+    } max-w-4xl mx-auto px-4`}
+  >
+    <motion.h2
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -510,8 +548,9 @@ const SectionHeading = ({ children, subtitle, align = "center" }) => (
     >
       {children}
     </motion.h2>
+
     {subtitle && (
-      <motion.p 
+      <motion.p
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -524,19 +563,33 @@ const SectionHeading = ({ children, subtitle, align = "center" }) => (
   </div>
 );
 
-const InputField = ({ label, type = "text", placeholder }) => (
+interface InputFieldProps {
+  label: string;
+  type?: string;
+  placeholder?: string;
+}
+
+const InputField = ({ label, type = "text", placeholder }: InputFieldProps) => (
   <div className="space-y-2">
-    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{label}</label>
-    <input 
-      type={type} 
+    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+      {label}
+    </label>
+    <input
+      type={type}
       placeholder={placeholder}
       className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400"
     />
   </div>
 );
 
+
 // --- Sections ---
-const Navbar = ({ isDark, toggleTheme }) => {
+interface NavbarProps {
+  isDark: boolean;
+  toggleTheme: () => void;
+}
+
+const Navbar = ({ isDark, toggleTheme }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -585,10 +638,11 @@ const Navbar = ({ isDark, toggleTheme }) => {
               onMouseEnter={() => setActiveDropdown('services')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
+              <Link href='/service'>
               <button className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-1 py-8">
                 Services
               </button>
-              
+              </Link>
               {/* Mega Menu */}
               <AnimatePresence>
                 {activeDropdown === 'services' && (
@@ -616,14 +670,15 @@ const Navbar = ({ isDark, toggleTheme }) => {
             </div>
 
             {["About", "Work", "Why Us"].map((item) => (
-              <a 
-                key={item} 
-                href={`#${item.toLowerCase().replace(" ", "-")}`} 
-                className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
-                {item}
-              </a>
-            ))}
+  <Link
+    key={item}
+    href={`/${item.toLowerCase().replace(" ", "-")}`}
+    className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+  >
+    {item}
+  </Link>
+))}
+
           </div>
 
           {/* Actions */}
@@ -674,7 +729,7 @@ const Navbar = ({ isDark, toggleTheme }) => {
             </div>
             <div className="mt-auto">
               <MagneticButton className="w-full py-4 rounded-xl bg-blue-600 text-white font-bold text-lg">
-                Let's Talk
+                Let&apos;s Talk
               </MagneticButton>
             </div>
           </motion.div>
@@ -704,7 +759,7 @@ const Hero = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
             </span>
-            Jharkhand's #1 Digital Agency
+            Jharkhand&apos;s #1 Digital Agency
           </motion.div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-8 leading-[1.1]">
@@ -769,7 +824,7 @@ const Hero = () => {
 };
 
 const InteractiveDashboard = () => {
- const [theme, setTheme] = useState(themes.purple);
+ const [theme, setTheme] = useState(themes.pink);
 
   return (
     <section className="w-full py-10 flex flex-col items-center gap-6">
