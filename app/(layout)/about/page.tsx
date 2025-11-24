@@ -340,31 +340,49 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {team.map((member, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                whileHover={{ y: -5 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="group relative bg-zinc-100 dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/50 transition-colors"
-              >
-                <div className="aspect-square rounded-xl overflow-hidden mb-4 relative">
-                   <Image src={member.img} alt={member.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                </div>
-                <h3 className="font-bold text-zinc-900 dark:text-white text-sm">{member.name}</h3>
-                <div className="flex flex-wrap gap-1 mt-2">
-                   {member.roles.map(r => (
-                      <span key={r} className="text-[10px] uppercase font-bold px-1.5 py-0.5 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-md">
-                        {r}
-                      </span>
-                   ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+  {team.map((member, i) => (
+    <motion.div
+      key={i}
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      whileHover={{ y: -5 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: i * 0.05 }}
+      className="group relative bg-zinc-100 dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/50 transition-colors"
+    >
+      {/* IMAGE 60% height */}
+      <div className="h-[60%] aspect-square rounded-2xl overflow-hidden mb-4 relative">
+        <Image
+          src={member.img}
+          width={500}
+          height={500}
+          alt={member.name}
+          className="w-full h-full object-cover rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-500"
+        />
+      </div>
+
+      {/* NAME */}
+      <h3 className="font-semibold text-zinc-900 dark:text-white text-sm md:text-base">
+        {member.name}
+      </h3>
+
+      {/* ROLES - smaller text */}
+      <div className="flex flex-wrap gap-1 mt-1">
+        {member.roles.map((r) => (
+          <span
+            key={r}
+            className="text-[10px] md:text-[11px] uppercase font-medium px-1.5 py-0.5 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-md"
+          >
+            {r}
+          </span>
+        ))}
+      </div>
+    </motion.div>
+  ))}
+</div>
+
+
         </div>
       </section>
 
