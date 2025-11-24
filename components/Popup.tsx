@@ -21,7 +21,7 @@ export default function Popup({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-[999]">
+    <div className="fixed inset-0 flex items-center justify-center z-999">
       <div className="absolute inset-0 backdrop-blur-sm bg-black/10 dark:bg-black/30" />
 
       <div
