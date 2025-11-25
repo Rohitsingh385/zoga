@@ -111,9 +111,7 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
       >
         <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between relative">
           {/* Logo */}
-          
-          <Link href="/">
-          <a href="#" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <div
               className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 
                   flex items-center justify-center shadow-lg shadow-blue-500/20 
@@ -130,7 +128,6 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
             <span className="font-bold text-2xl tracking-tight text-slate-900 dark:text-white">
               Zoga
             </span>
-          </a>
           </Link>
 
           {/* Desktop Menu */}
@@ -181,15 +178,24 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
               </AnimatePresence>
             </div>
 
-            {["About", "Work", "Why Us"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase().replace(" ", "-")}`}
-                className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
-                {item}
-              </a>
-            ))}
+            <Link
+              href="/about"
+              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              About
+            </Link>
+            <Link
+              href="/work"
+              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Work
+            </Link>
+            <Link
+              href="/why-us"
+              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Why Us
+            </Link>
           </div>
 
           {/* Actions */}
@@ -233,19 +239,53 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
               </button>
             </div>
             <div className="flex flex-col gap-6 text-3xl font-bold text-slate-900 dark:text-white">
-              {["Services", "Work", "About Us", "Contact"].map((link, i) => (
-                <motion.a
-                  key={link}
-                  href={`#${link.toLowerCase().replace(" ", "-")}`}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0 }}
+                className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-6"
+              >
+                <Link href="/service" onClick={() => setIsMobileOpen(false)}>
+                  Services
+                </Link>
+                <ArrowRight className="-rotate-45 text-slate-300" />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-6"
+              >
+                <Link href="/work" onClick={() => setIsMobileOpen(false)}>
+                  Work
+                </Link>
+                <ArrowRight className="-rotate-45 text-slate-300" />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-6"
+              >
+                <Link href="/about" onClick={() => setIsMobileOpen(false)}>
+                  About Us
+                </Link>
+                <ArrowRight className="-rotate-45 text-slate-300" />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-6"
+              >
+                <a
+                  href="mailto:contact@zoga.studio"
                   onClick={() => setIsMobileOpen(false)}
-                  className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-6"
                 >
-                  {link} <ArrowRight className="-rotate-45 text-slate-300" />
-                </motion.a>
-              ))}
+                  Contact
+                </a>
+                <ArrowRight className="-rotate-45 text-slate-300" />
+              </motion.div>
             </div>
             <div className="mt-auto">
               <MagneticButton className="w-full py-4 rounded-xl bg-blue-600 text-white font-bold text-lg">

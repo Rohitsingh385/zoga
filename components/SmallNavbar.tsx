@@ -1,8 +1,9 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, Moon, Sun, X } from "lucide-react";
+import Link from "next/link";
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react";
 
 interface NavbarProps {
   view: string;
@@ -63,7 +64,6 @@ const SmallNavbar: React.FC<NavbarProps> = ({
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-black/90 backdrop-blur-md shadow-lg dark:shadow-zinc-900/50 border-b border-zinc-200/50 dark:border-zinc-800/50 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="flex justify-between items-center h-20">
-
           {/* Logo */}
           <button
             onClick={() => setView("work")}
@@ -74,20 +74,30 @@ const SmallNavbar: React.FC<NavbarProps> = ({
 
           {/* Desktop Links */}
           <div className="hidden lg:flex items-center space-x-2">
-            <NavLink to="about" view={view} setView={setView}>
+            <Link
+              href="/about"
+              className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 hover:text-purple-500 text-zinc-700 dark:text-zinc-300"
+            >
               About
-            </NavLink>
-            <NavLink to="work" view={view} setView={setView}>
+            </Link>
+            <Link
+              href="/work"
+              className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 hover:text-purple-500 text-zinc-700 dark:text-zinc-300"
+            >
               Work
-            </NavLink>
-            <NavLink to="services" view={view} setView={setView}>
+            </Link>
+            <Link
+              href="/service"
+              className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 hover:text-purple-500 text-zinc-700 dark:text-zinc-300"
+            >
               Services
-            </NavLink>
-            <NavLink to="contact" view={view} setView={setView}>
-              <span className="px-4 py-2 bg-purple-500 text-white rounded-full font-semibold text-sm hover:bg-purple-600 transition-colors duration-300 shadow-md shadow-purple-500/30">
-                Contact Us
-              </span>
-            </NavLink>
+            </Link>
+            <Link
+              href="mailto:support@zoga.studio"
+              className="px-4 py-2 bg-purple-500 text-white rounded-full font-semibold text-sm hover:bg-purple-600 transition-colors duration-300 shadow-md shadow-purple-500/30"
+            >
+              Contact Us
+            </Link>
 
             {/* Dark Mode Toggle */}
             <button
@@ -101,7 +111,11 @@ const SmallNavbar: React.FC<NavbarProps> = ({
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                 >
-                  {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                  {isDarkMode ? (
+                    <Sun className="w-5 h-5" />
+                  ) : (
+                    <Moon className="w-5 h-5" />
+                  )}
                 </motion.div>
               </AnimatePresence>
             </button>
@@ -114,10 +128,12 @@ const SmallNavbar: React.FC<NavbarProps> = ({
               className="p-2 rounded-full text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             >
               <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={isDarkMode ? "moon-m" : "sun-m"}
-                >
-                  {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+                <motion.div key={isDarkMode ? "moon-m" : "sun-m"}>
+                  {isDarkMode ? (
+                    <Sun className="w-6 h-6" />
+                  ) : (
+                    <Moon className="w-6 h-6" />
+                  )}
                 </motion.div>
               </AnimatePresence>
             </button>
@@ -126,7 +142,11 @@ const SmallNavbar: React.FC<NavbarProps> = ({
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-full text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -143,38 +163,34 @@ const SmallNavbar: React.FC<NavbarProps> = ({
             className="lg:hidden px-6 pb-6 bg-white dark:bg-black border-t border-zinc-200 dark:border-zinc-800"
           >
             <div className="flex flex-col space-y-1 pt-4">
-              <NavLink
-                to="about"
-                view={view}
-                setView={setView}
-                closeMenu={() => setIsMobileMenuOpen(false)}
+              <Link
+                href="/about"
+                className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 hover:text-purple-500 text-zinc-700 dark:text-zinc-300"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 About
-              </NavLink>
-              <NavLink
-                to="work"
-                view={view}
-                setView={setView}
-                closeMenu={() => setIsMobileMenuOpen(false)}
+              </Link>
+              <Link
+                href="/work"
+                className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 hover:text-purple-500 text-zinc-700 dark:text-zinc-300"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Work
-              </NavLink>
-              <NavLink
-                to="services"
-                view={view}
-                setView={setView}
-                closeMenu={() => setIsMobileMenuOpen(false)}
+              </Link>
+              <Link
+                href="/service"
+                className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 hover:text-purple-500 text-zinc-700 dark:text-zinc-300"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Services
-              </NavLink>
-              <NavLink
-                to="contact"
-                view={view}
-                setView={setView}
-                closeMenu={() => setIsMobileMenuOpen(false)}
+              </Link>
+              <Link
+                href="mailto:support@zoga.studio"
+                className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 hover:text-purple-500 text-zinc-700 dark:text-zinc-300"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Contact Us
-              </NavLink>
+              </Link>
             </div>
           </motion.div>
         )}
