@@ -23,6 +23,8 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import Popup from '@/components/Popup';
+import { Button } from '@/components/ui/button';
+import { useElementInView } from '@/lib/hooks/useElementInView';
 
 // --- Brand & Content Data ---
 
@@ -742,57 +744,267 @@ const Navbar = ({ isDark, toggleTheme }: NavbarProps) => {
   );
 };
 
-const Hero = () => {
+
+// 2. Cinematic Text (Word-by-word staggering transition)
+
+
+// 3. Interactive Spotlight Grid Background
+interface GridBackgroundProps {
+  mousePos: { x: number; y: number } | null;
+}
+
+const GridBackground: React.FC<GridBackgroundProps> = ({ mousePos }) => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    {/* Base Grid - Dense and Faint */}
+    <div 
+      className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
+      style={{
+        backgroundImage: `linear-gradient(to right, #888 1px, transparent 1px), linear-gradient(to bottom, #888 1px, transparent 1px)`,
+        backgroundSize: '32px 32px'
+      }}
+    />
+    
+    {/* Spotlight Reveal - Shows colored grid on hover */}
+    <div 
+  className="absolute inset-0 transition-opacity duration-300"
+  style={{
+    backgroundImage: `
+      linear-gradient(to right, #6366f1 1px, transparent 1px),
+      linear-gradient(to bottom, #a855f7 1px, transparent 1px)
+    `,
+    backgroundSize: "32px 32px",
+    maskImage: mousePos
+      ? `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, black, transparent)`
+      : undefined,
+    WebkitMaskImage: mousePos
+      ? `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, black, transparent)`
+      : undefined,
+    opacity: 0.6,
+  }}
+/>
+
+
+    {/* Vignette to fade edges */}
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(255,255,255,1)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,1)_100%)] opacity-70" />
+  </div>
+);
+
+// 4. Subtle Grid Particles (Fixed, non-mouse-interactive, moving along grid lines)
+const GridParticles = () => {
+  // Increased count to 6, all size 2, new cool colors, new right-side positions
+  const particles = [
+    { id: 1, color: 'bg-cyan-400', size: 2, startX: '20%', startY: '30%', duration: 24, animation: 'grid-slide-1' }, // Left/Center
+    { id: 2, color: 'bg-purple-400', size: 2, startX: '70%', startY: '60%', duration: 28, animation: 'grid-slide-2' }, // Right/Center
+    { id: 3, color: 'bg-pink-400', size: 2, startX: '45%', startY: '85%', duration: 22, animation: 'grid-slide-3' }, // Bottom/Center
+    { id: 4, color: 'bg-blue-400', size: 2, startX: '10%', startY: '15%', duration: 26, animation: 'grid-slide-4' }, // Top/Left
+    { id: 5, color: 'bg-emerald-400', size: 2, startX: '85%', startY: '40%', duration:20, animation: 'grid-slide-5' }, // Right Side (New)
+    { id: 6, color: 'bg-indigo-400', size: 2, startX: '65%', startY: '10%', duration: 27, animation: 'grid-slide-6' }, // Top/Right (New)
+  ];
+
   return (
-    <section className="relative min-h-screen pt-32 pb-20 flex flex-col justify-center overflow-hidden">
-      {/* Ambient Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-blue-600/20 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen animate-blob" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[70vw] h-[70vw] bg-purple-600/20 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen animate-blob animation-delay-2000" />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
-      </div>
+    <div className="absolute inset-0 pointer-events-none opacity-80">
+      {particles.map((p) => (
+        <div 
+          key={p.id}
+          className={`absolute w-${p.size} h-${p.size} rounded-full ${p.color} shadow-lg blur-[1px]`}
+          style={{
+            top: p.startY,
+            left: p.startX,
+            animation: `${p.animation} ${p.duration}s linear infinite alternate`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full grid lg:grid-cols-2 gap-12 items-center">
+// 5. Intersection Observer Hook
+
+
+interface FadeInProps {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}
+
+const FadeIn: React.FC<FadeInProps> = ({ children, delay = 0, className = "" }) => {
+  const [ref, isInView] = useElementInView(0.1);
+
+  return (
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${delay}ms` }}
+      className={`
+        transition-all duration-700 ease-out transform
+        ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}
+        ${className}
+      `}
+    >
+      {children}
+    </div>
+  );
+};
+const Hero = () =>{
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  setMousePos({ x: e.clientX, y: e.clientY });
+};
+
+
+  return (
+    <section 
+      onMouseMove={handleMouseMove}
+      className="relative min-h-[100vh] pt-32 pb-20 flex flex-col justify-center overflow-hidden" 
+    >
+      {/* Background Layer */}
+      <div className="absolute inset-0 pointer-events-none bg-zinc-50 dark:bg-black transition-colors duration-500" />
+      
+      {/* Interactive Grid & Ambience */}
+      <GridBackground mousePos={mousePos} />
+
+      {/* Grid Particles (The tiny colorful dots moving along the grid) */}
+      <GridParticles />
+
+      {/* Ambient Blobs (Subtler) */}
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] mix-blend-screen animate-pulse animation-delay-2000" />
+
+      {/* Content Container */}
+      <div className="max-w-7xl mx-auto px-6 relative z-20 w-full grid lg:grid-cols-2 gap-16 items-center">
+        
+        {/* Left Content */}
         <div className="text-center lg:text-left">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-700 dark:text-blue-400 text-xs font-bold tracking-wide uppercase mb-8"
-          >
+          
+          {/* Badge */}
+          <FadeIn delay={0} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md text-[10px] font-bold tracking-widest uppercase mb-8 shadow-sm hover:scale-105 transition-transform cursor-default select-none">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            Jharkhand&apos;s #1 Digital Agency
-          </motion.div>
+            <span className="text-zinc-500 text-md dark:text-zinc-400 hover:text-emerald-300/50">#1 Digital Agency</span>
+          </FadeIn>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-8 leading-[1.1]">
-            We Engineer <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 animate-gradient-x">
-              Digital Dominance
+          {/* Headline - Typography Overhaul */}
+          <FadeIn delay={100}>
+            <h1 className="text-4xl md:text-6xl lg:text-[5.2rem] font-black tracking-tighter text-zinc-900 dark:text-white mb-8 leading-[0.9] selection:bg-purple-500 selection:text-white">
+               WE Forge <br />
+              {/* CinematicText component with staggered word swap */}
+              <span className="text-transparent text-5xl md:text-7xl lg:text-[5.5rem] bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">
+             DOMINANCE.
             </span>
-          </h1>
+            </h1>
+          </FadeIn>
 
-          <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-            From <span className="text-slate-900 dark:text-white font-semibold">Ranchi</span> to the world. We build authentic, high-performance websites & apps that drive real business growth.
-          </p>
+          {/* Description - Enhanced Visibility */}
+          <FadeIn delay={200}>
+            <div className="relative mb-12 max-w-lg mx-auto lg:mx-0">
+               <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full opacity-0 lg:opacity-100 shadow-lg" />
+               <p className="text-lg md:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium lg:pl-4">
+                 We engineer bespoke digital systems that convert traffic into territory. Precision infrastructure for brands that demand <span className="text-zinc-900 dark:text-white font-bold">absolute authority</span>.
+               </p>
+            </div>
+          </FadeIn>
 
-          <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            <MagneticButton className="px-8 py-4 text-lg">Get a Free Audit</MagneticButton>
-            <MagneticButton className="group px-8 py-4 text-lg">View Case Studies</MagneticButton>
-          </div>
-          
-          <div className="mt-12 flex items-center justify-center lg:justify-start gap-6 text-sm font-medium text-slate-500">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 size={16} className="text-green-500" /> 50+ Ranchi Clients
+          {/* Buttons - Compact & Punchy */}
+          <FadeIn delay={300}>
+  <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start">
+
+    {/* Start Project */}
+    <button
+      onClick={() => console.log("Audit")}
+      className="
+        group relative px-6 py-3 rounded-xl
+        text-sm font-medium
+        bg-gradient-to-br from-blue-600 to-purple-600
+        text-white shadow-md shadow-blue-500/30
+        hover:shadow-purple-500/40
+        transition-all duration-300
+        overflow-hidden
+        dark:from-blue-500 dark:to-purple-500
+      "
+    >
+      <span className="relative z-10 flex items-center gap-2">
+        Start Project
+        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+      </span>
+
+      {/* Glow Effect */}
+      <span
+        className="
+          absolute inset-0 bg-white/10 opacity-0 
+          group-hover:opacity-100 blur-md transition-all duration-500
+        "
+      />
+    </button>
+
+    {/* View Live Systems */}
+    <button
+      onClick={() => console.log("Work")}
+      className="
+        group relative px-6 py-3 rounded-xl
+        text-sm font-medium
+        border border-black/10 dark:border-white/15
+        bg-white text-black
+        dark:bg-neutral-900 dark:text-white
+        shadow-sm
+        hover:bg-black/5 dark:hover:bg-white/10
+        transition-all duration-300
+      "
+    >
+      <span className="relative z-10 flex items-center gap-2">
+        View Live Systems
+        <ArrowUpRight className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
+      </span>
+
+      {/* Subtle hover highlight */}
+      <span
+        className="
+          absolute inset-0 opacity-0 group-hover:opacity-100
+          bg-gradient-to-br from-white/20 to-transparent
+          dark:from-white/5
+          transition-all duration-500
+        "
+      />
+    </button>
+
+  </div>
+</FadeIn>
+
+          {/* Trust Indicators */}
+          <FadeIn delay={400}>
+            <div className="mt-12 pt-5 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-center lg:justify-start gap-12 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
+              <div className="group cursor-default">
+                <span className="block text-2xl text-zinc-900 dark:text-white mb-1 group-hover:text-blue-500 transition-colors">50+</span>
+                Active Systems
+              </div>
+               <div className="group cursor-default">
+                <span className="block text-2xl text-zinc-900 dark:text-white mb-1 group-hover:text-purple-500 transition-colors">98%</span>
+                Retention Rate
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 size={16} className="text-green-500" /> 98% Retention
-            </div>
-          </div>
+          </FadeIn>
         </div>
 
-        {/* Right Side: Abstract Tech Visualization (Replacing the Tilt Card which moved down) */}
-        <div className="relative h-[500px] hidden lg:flex items-center justify-center perspective-1000">
+        {/* Right Side: Visual Data Orb (Refined) */}
+        <div className="relative h-[600px] hidden lg:flex items-center justify-center perspective-1000">
+           
+           {/* The Orb Container */}
+           <div className="relative w-[550px] h-[550px] flex items-center justify-center select-none">
+              
+              {/* Rotating Rings */}
+              <div className="absolute w-full h-full rounded-full border border-zinc-100 dark:border-white/5 animate-spin-ultra-slow" />
+              <div className="absolute w-[80%] h-[80%] rounded-full border border-zinc-200 dark:border-white/10 border-dashed animate-spin-reverse-slow" />
+              <div className="absolute w-[60%] h-[60%] rounded-full border border-blue-300/10 animate-spin-slow" />
+              
+              {/* Floating Tech Nodes */}
+             
+              {/* Central Core Gradient */}
+              
+
+           </div>
+
+                   <div className="relative h-[500px] hidden lg:flex items-center justify-center perspective-1000">
            {/* Simulated 3D Network */}
            <motion.div 
              animate={{ rotate: 360 }}
@@ -821,10 +1033,12 @@ const Hero = () => {
              </div>
            </motion.div>
         </div>
+        </div>
       </div>
     </section>
   );
 };
+
 
 type Theme = {
   from: string;
@@ -1209,9 +1423,9 @@ const Portfolio = () => (
               ))}
             </div>
 
-            <MagneticButton className="group">
+            <Button className="group">
               View Case Study <ArrowRight className="inline ml-2 group-hover:translate-x-1 transition-transform" size={16} />
-            </MagneticButton>
+            </Button>
           </div>
         </motion.div>
       ))}
@@ -1652,6 +1866,8 @@ const Footer = () => (
 
 const App = () => {
   const [isDark, setIsDark] = useState(true);
+    const [view, setView] = useState('home');
+
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDark);
@@ -1659,6 +1875,87 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#030014] text-slate-900 dark:text-slate-100 font-sans selection:bg-blue-500/30 transition-colors duration-500 overflow-x-hidden">
+
+      <style>{`
+          /* Rotational Animations for the Orb */
+          @keyframes spin-ultra-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          .animate-spin-ultra-slow {
+            animation: spin-ultra-slow 60s linear infinite;
+          }
+          @keyframes spin-reverse-slow {
+             from { transform: rotate(360deg); }
+             to { transform: rotate(0deg); }
+          }
+          .animate-spin-reverse-slow {
+             animation: spin-reverse-slow 40s linear infinite;
+          }
+           @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          .animate-spin-slow {
+            animation: spin-slow 20s linear infinite;
+          }
+          @keyframes float {
+            0%, 100% { transform: translateY(-10px); }
+            50% { transform: translateY(10px); }
+          }
+          .animate-float {
+            animation: float 6s ease-in-out infinite;
+          }
+          .animation-delay-1000 { animation-delay: 1s; }
+          .animation-delay-2000 { animation-delay: 2s; }
+          
+          @keyframes pulse-slow {
+             0%, 100% { transform: scale(1); opacity: 1; }
+             50% { transform: scale(1.05); opacity: 0.9; }
+          }
+          .animate-pulse-slow {
+             animation: pulse-slow 4s ease-in-out infinite;
+          }
+          
+          /* Grid Particles Movement (aligned to 32px grid size) */
+          @keyframes grid-slide-1 {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(64px, 32px); }
+            50% { transform: translate(0, 64px); }
+            75% { transform: translate(-32px, 32px); }
+            100% { transform: translate(0, 0); }
+          }
+          @keyframes grid-slide-2 {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-96px, 0); }
+            50% { transform: translate(-96px, -64px); }
+            75% { transform: translate(0, -64px); }
+            100% { transform: translate(0, 0); }
+          }
+          @keyframes grid-slide-3 {
+            0% { transform: translate(0, 0); }
+            33% { transform: translate(128px, 0); }
+            66% { transform: translate(128px, -32px); }
+            100% { transform: translate(0, -32px); }
+          }
+          @keyframes grid-slide-4 {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(32px, 96px); }
+            100% { transform: translate(0, 0); }
+          }
+          /* NEW ANIMATIONS FOR NEW DOTS */
+          @keyframes grid-slide-5 {
+            0% { transform: translate(0, 0); }
+            33% { transform: translate(-32px, 64px); }
+            66% { transform: translate(-64px, 32px); }
+            100% { transform: translate(0, 0); }
+          }
+          @keyframes grid-slide-6 {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(-96px, 32px); }
+            100% { transform: translate(0, 0); }
+          }
+        `}</style>
       <Navbar isDark={isDark} toggleTheme={() => setIsDark(!isDark)} />
       
       <main>
