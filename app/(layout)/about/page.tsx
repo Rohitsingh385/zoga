@@ -508,7 +508,7 @@ const PortfolioPage = ({ setView }: { setView: (view: string) => void }) => {
                   whileHover={{ scale: 1.02, zIndex: 10 }}
                   className="relative rounded-3xl overflow-hidden group cursor-pointer w-full h-full bg-zinc-800 border border-zinc-700"
                 >
-                    <Image src={project.img} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <Image src={project.img} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"  width={800} height={600}  />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10 opacity-60 group-hover:opacity-80 transition-opacity" />
                     <div className="absolute bottom-0 left-0 right-0 p-8 z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                         <div className="flex gap-2 mb-3">
@@ -623,7 +623,7 @@ useEffect(() => {
   window.scrollTo(0, 0);
 
   const timer = setTimeout(() => {
-    setMenuOpen(false);
+     setMenuOpen(prev => (prev === false ? prev : false));
   }, 0);
 
   return () => clearTimeout(timer);
