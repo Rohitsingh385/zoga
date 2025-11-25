@@ -1753,7 +1753,7 @@ const App = () => {
           >
             <span className="flex items-center">
               <Code className="h-6 w-6 mr-2 text-cyan-400" />
-              THE NEXUS
+              ZOGA
             </span>
           </a>
           <nav className="hidden md:flex space-x-8">
@@ -1806,7 +1806,7 @@ const App = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-5xl sm:text-7xl lg:text-9xl font-black tracking-tighter text-white mb-6 leading-tight">
               <span className="text-gray-700 block text-2xl mb-4 tracking-widest uppercase">
-                THE SERVICE NEXUS
+                THE SERVICE ZOGA
               </span>
               ENGINEERING{" "}
               <span className="text-cyan-400 drop-shadow-neon">RARE</span>{" "}
