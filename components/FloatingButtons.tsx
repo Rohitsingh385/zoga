@@ -1,6 +1,6 @@
 "use client";
 
-import React, {JSX, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Phone, X } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { usePathname } from "next/navigation";
@@ -15,19 +15,20 @@ const WHATSAPP_NUMBER = "+919835504582";
 const PHONE_NUMBER = "+919835504582";
 
 const presets: Preset[] = [
-  { id: "web-app", title: "Web & App Dev", message: "Hello! I'm interested in Web & App Development. Can we discuss scope and pricing?" },
-  { id: "web-design", title: "Web Design", message: "Hi — I'd like a modern website design (UI/UX). Can you share packages?" },
-  { id: "video-editing", title: "Video Editing", message: "Hello — I need video editing for marketing/social. Can you share examples?" },
-  { id: "seo", title: "SEO", message: "Hi — I'm interested in SEO services for organic growth. Can we discuss strategy?" },
-  { id: "designing", title: "Designing", message: "Hello — I need branding & design assets (logo, guidelines). Can you help with a quote?" },
-  { id: "digital-marketing", title: "Digital Marketing", message: "Hi — I want digital marketing (ads, funnel, growth). Can you share packages?" },
-  { id: "gmb", title: "GMB", message: "Hello — I need Google My Business optimization & local SEO." }
+  { id: "web-app", title: "Web & App Dev", message: "Hello! I'm interested in Web & App Development." },
+  { id: "web-design", title: "Web Design", message: "Hi — I'd like a modern website design." },
+  { id: "video-editing", title: "Video Editing", message: "Hello — I need video editing." },
+  { id: "seo", title: "SEO", message: "Hi — I'm interested in SEO services." },
+  { id: "designing", title: "Designing", message: "Hello — I need branding & design assets." },
+  { id: "digital-marketing", title: "Digital Marketing", message: "Hi — I want digital marketing services." },
+  { id: "gmb", title: "GMB", message: "Hello — I need Google My Business optimization." }
 ];
 
-export default function FloatingButtons(): JSX.Element | null {
+export default function FloatingButtons() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [customMessage, setCustomMessage] = useState("");
 
   const isStudentPage =
     typeof pathname === "string" && pathname.startsWith("/student");
@@ -39,142 +40,156 @@ export default function FloatingButtons(): JSX.Element | null {
 
   if (!isMounted || isStudentPage) return null;
 
-  const openWhatsApp = (message: string) => {
-    const encoded = encodeURIComponent(message);
+  const sendWhatsApp = (msg: string) => {
+    const encoded = encodeURIComponent(msg);
     const number = WHATSAPP_NUMBER.replace(/\+/g, "");
     window.open(`https://wa.me/${number}?text=${encoded}`, "_blank");
     setIsOpen(false);
-  };
-
-  const makePhoneCall = () => {
-    window.location.href = `tel:${PHONE_NUMBER}`;
+    setCustomMessage("");
   };
 
   return (
     <>
-      {/* MAIN FLOATING AREA */}
-      <div className="fixed right-6 bottom-6 z-50 flex flex-col items-end gap-4">
+      <div className="fixed right-6 bottom-6 z-[9999] flex flex-col items-end gap-4">
 
         {/* DESKTOP POPUP */}
         {isOpen && (
-          <div className="hidden md:block w-80 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-gray-200 dark:border-zinc-800 p-3 animate-in slide-in-from-bottom duration-300">
-            <div className="flex items-center justify-between mb-2">
+          <div className="hidden md:block w-80 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-gray-300 dark:border-zinc-800 p-4 relative bottom-4 max-h-[70vh] overflow-y-auto">
+
+            {/* Header */}
+            <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-green-500 text-white shadow-md shadow-green-500/20">
+                <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white shadow-md">
                   <FaWhatsapp className="w-5 h-5" />
                 </div>
-
                 <div>
-                  <div className="text-sm font-semibold dark:text-white">Zoga — Quick Chat</div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Choose a topic to start
-                  </div>
+                  <p className="text-sm font-semibold dark:text-white">Zoga — Quick Chat</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">Choose a topic or type your message</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 rounded-md text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200 transition"
+                className="p-1 rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="flex flex-col gap-2">
+            {/* Predefined Options */}
+            <div className="flex flex-col gap-2 mb-3">
               {presets.map((p) => (
                 <button
                   key={p.id}
-                  onClick={() => openWhatsApp(p.message)}
-                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition"
+                  onClick={() => sendWhatsApp(p.message)}
+                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
                 >
-                  <div className="text-sm font-medium dark:text-white">{p.title}</div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2">
-                    {p.message}
-                  </div>
+                  <p className="text-sm font-medium dark:text-white">{p.title}</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{p.message}</p>
                 </button>
               ))}
+            </div>
+
+            {/* CUSTOM CHAT INPUT */}
+            <div className="border-t border-zinc-300 dark:border-zinc-800 pt-3">
+              <textarea
+                value={customMessage}
+                onChange={(e) => setCustomMessage(e.target.value)}
+                placeholder="Type your own message..."
+                className="w-full p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-sm dark:text-white outline-none resize-none"
+              />
+
+              <button
+                disabled={!customMessage.trim()}
+                onClick={() => sendWhatsApp(customMessage)}
+                className="mt-2 w-full py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 disabled:opacity-40"
+              >
+                Send Message
+              </button>
             </div>
           </div>
         )}
 
-        {/* FLOATING BUTTONS */}
+        {/* Floating Buttons */}
         <div className="flex flex-col items-end gap-3">
 
-          {/* WHATSAPP BUTTON — NOW ABOVE */}
+          {/* WHATSAPP BUTTON */}
           <button
-            onClick={() => setIsOpen((s) => !s)}
+            title="Chat with us"
+            onClick={() => setIsOpen(!isOpen)}
             className="w-14 h-14 rounded-full flex items-center justify-center
-              bg-gradient-to-br from-green-500 to-emerald-600 
-              text-white 
-              shadow-lg shadow-green-500/25 dark:shadow-green-900/40
-              hover:scale-[1.05]
-              transition-transform"
+              bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/30 
+              dark:shadow-green-900/40 hover:scale-105 transition"
           >
-            {isOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <FaWhatsapp className="w-7 h-7" />
-            )}
+            {isOpen ? <X className="w-6 h-6" /> : <FaWhatsapp className="w-8 h-8" />}
           </button>
 
           {/* PHONE BUTTON */}
           <button
-            onClick={makePhoneCall}
+            title="Call us"
+            onClick={() => (window.location.href = `tel:${PHONE_NUMBER}`)}
             className="w-14 h-14 rounded-full flex items-center justify-center 
-              bg-gradient-to-br from-blue-500 to-indigo-600
-              text-white
-              shadow-lg shadow-blue-500/25 dark:shadow-blue-900/40
-              hover:scale-[1.05]
-              transition-transform"
+              bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30 
+              dark:shadow-blue-900/40 hover:scale-105 transition"
           >
             <Phone className="w-6 h-6" />
           </button>
         </div>
       </div>
 
-      {/* MOBILE SHEET */}
+      {/* MOBILE POPUP (NO BLUR) */}
       {isOpen && (
-        <div className="fixed inset-x-0 bottom-0 z-50 md:hidden">
-          <div className="bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 rounded-t-2xl shadow-2xl p-4">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg shadow-green-500/30 dark:shadow-green-900/40">
-                  <FaWhatsapp className="w-8 h-8" />
-                </div>
+        <div className="fixed inset-0 z-[9998] md:hidden flex flex-col justify-end bg-black/40">
 
+          <div className="bg-white dark:bg-zinc-900 rounded-t-2xl p-5 max-h-[75vh] overflow-y-auto border-t border-zinc-300 dark:border-zinc-800">
+
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white shadow">
+                  <FaWhatsapp className="w-7 h-7" />
+                </div>
                 <div>
-                  <div className="text-sm font-semibold dark:text-white">Start Chat</div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400">Select topic</div>
+                  <p className="text-base font-semibold dark:text-white">Start Chat</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">Select topic or type below</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 text-zinc-500 dark:text-zinc-300"
+                className="p-2 text-zinc-600 dark:text-zinc-300"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="flex flex-col gap-2">
-              {presets.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => openWhatsApp(p.message)}
-                  className="w-full px-4 py-3 rounded-lg bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"
-                >
-                  <div className="text-sm font-medium dark:text-white">{p.title}</div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400">{p.message}</div>
-                </button>
-              ))}
-            </div>
-          </div>
+            {presets.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => sendWhatsApp(p.message)}
+                className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 mb-2 text-left hover:bg-zinc-200 dark:hover:bg-zinc-700"
+              >
+                <p className="text-sm font-medium dark:text-white">{p.title}</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">{p.message}</p>
+              </button>
+            ))}
 
-          {/* BACKDROP */}
-          <div
-            className="fixed inset-0 bg-black/35 backdrop-blur-sm"
-            onClick={() => setIsOpen(false)}
-          />
+            {/* Custom Message */}
+            <textarea
+              value={customMessage}
+              onChange={(e) => setCustomMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="w-full p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-sm dark:text-white outline-none resize-none"
+            />
+
+            <button
+              disabled={!customMessage.trim()}
+              onClick={() => sendWhatsApp(customMessage)}
+              className="mt-3 w-full py-3 rounded-lg bg-green-500 text-white hover:bg-green-600 disabled:opacity-40"
+            >
+              Send Message
+            </button>
+          </div>
         </div>
       )}
     </>
