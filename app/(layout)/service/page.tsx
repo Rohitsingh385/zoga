@@ -1,6 +1,7 @@
 "use client";
 
 import type { ServiceData, ServiceId, VisualComponent } from "@/lib/type";
+import Navbar from "@/components/Navbar";
 import { AnimatePresence, motion, useMotionValue } from "framer-motion";
 import {
   Aperture,
@@ -1621,6 +1622,13 @@ const App = () => {
   const headerRef = useRef<HTMLDivElement | null>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
   useMagnetic(ctaRef, 0.1);
+
+  const [isDark, setIsDark] = useState(true);
+  const [view, setView] = useState("home");
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDark);
+  }, [isDark]);
 
   // Reduced magnetic strength for smoother feel
 
