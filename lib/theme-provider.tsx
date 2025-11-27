@@ -5,8 +5,7 @@ import React, {
   createContext,
   useContext,
   useEffect,
-  useState,
-  useRef,
+  useState
 } from "react";
 
 type Theme = "dark" | "light";
@@ -25,83 +24,46 @@ interface ThemeProviderProps {
   storageKey?: string;
 }
 
-/**
- * ThemeProvider component that manages theme state globally.
- * Defaults to dark mode and persists theme preference to localStorage.
- * @param {ReactNode} children - React components to wrap
- * @param {Theme} defaultTheme - Initial theme (defaults to "dark")
- * @param {string} storageKey - Key for localStorage persistence
- */
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({
+export const ThemeProvider = ({
   children,
   defaultTheme = "dark",
   storageKey = "theme-preference",
-}) => {
+}: ThemeProviderProps) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    // Only access localStorage on the client side
-    if (typeof window === "undefined") {
-      return defaultTheme;
-    }
+    if (typeof window === "undefined") return defaultTheme;
 
-    const storedTheme = localStorage.getItem(storageKey) as Theme | null;
-    if (storedTheme && (storedTheme === "dark" || storedTheme === "light")) {
-      return storedTheme;
-    }
+    const stored = localStorage.getItem(storageKey) as Theme | null;
 
-    // Check system preference if no stored preference exists
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    return prefersDark ? "dark" : "light";
+    if (stored === "dark" || stored === "light") return stored;
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   });
 
-  const mountedRef = useRef(false);
-
-  // Apply theme to DOM after hydration
   useEffect(() => {
-    if (!mountedRef.current) {
-      mountedRef.current = true;
-      return;
-    }
+    const html = document.documentElement;
 
-    const htmlElement = document.documentElement;
-    if (theme === "dark") {
-      htmlElement.classList.add("dark");
-    } else {
-      htmlElement.classList.remove("dark");
-    }
+    html.classList.remove("light", "dark");
+    html.classList.add(theme);
+
     localStorage.setItem(storageKey, theme);
   }, [theme, storageKey]);
 
-  const toggleTheme = (): void => {
+  const toggleTheme = () =>
     setThemeState((prev) => (prev === "dark" ? "light" : "dark"));
-  };
 
-  const setTheme = (newTheme: Theme): void => {
-    setThemeState(newTheme);
-  };
+  const setTheme = (newTheme: Theme) => setThemeState(newTheme);
 
-  const value: ThemeContextType = {
-    theme,
-    toggleTheme,
-    setTheme,
-  };
-
-  // Render provider immediately without hydration mismatch checks
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
   );
 };
 
-/**
- * useTheme hook to access theme context
- * @returns {ThemeContextType} Theme context value
- * @throws {Error} If used outside ThemeProvider
- */
 export const useTheme = (): ThemeContextType => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error("useTheme must be used inside ThemeProvider");
+  return ctx;
 };
