@@ -135,26 +135,32 @@ export default function Navbar() {
                     className="absolute top-[80%] left-1/2 -translate-x-1/2 w-[600px] p-6 bg-white dark:bg-[#0b0b13] rounded-2xl border border-slate-200 dark:border-white/10 shadow-2xl grid grid-cols-2 gap-4"
                   >
                     {SERVICES.map((s) => (
-                      <Link
-                        key={s.id}
-                        href="/service"
-                        className="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group"
-                      >
-                        <div
-                          className={`w-10 h-10 rounded-lg bg-gradient-to-br ${s.color} flex items-center justify-center text-white`}
-                        >
-                          <s.icon size={20} />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
-                            {s.title}
-                          </h4>
-                          <p className="text-xs text-slate-500 leading-relaxed mt-1">
-                            {s.desc}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
+  <Link
+    key={s.id}
+    href="/service"
+    className="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group"
+  >
+    <div
+      className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${s.color} 
+      flex items-center justify-center text-white 
+      p-2 shadow-sm dark:shadow-none 
+      transform transition-all duration-200 
+      group-hover:scale-[1.04] group-hover:shadow-md`}
+    >
+      <s.icon size={22} className="opacity-95" />
+    </div>
+
+    <div>
+      <h4 className="font-bold text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
+        {s.title}
+      </h4>
+      <p className="text-xs text-slate-500 leading-relaxed mt-1">
+        {s.desc}
+      </p>
+    </div>
+  </Link>
+))}
+
                   </motion.div>
                 )}
               </AnimatePresence>
