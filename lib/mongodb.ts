@@ -1,42 +1,54 @@
-import { MongoClient, Db } from "mongodb";
+import mongoose from "mongoose";
 
 const MONGO_URL = process.env.MONGO_URL;
 
 if (!MONGO_URL) {
-  throw new Error("Please define the MONGO_URL environment variable");
+  throw new Error("Please define the MONGO_URL environment variable in .env");
 }
 
-interface MongoConnection {
-  client: MongoClient;
-  db: Db;
+interface GlobalWithMongoose {
+  mongoose: {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+  };
 }
 
-interface GlobalWithMongo {
-  _mongoClientPromise?: Promise<MongoConnection>;
+declare const global: GlobalWithMongoose;
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
-const globalWithMongo = global as GlobalWithMongo;
-
-let cached = globalWithMongo._mongoClientPromise;
-
-async function connectToDatabase(): Promise<MongoConnection> {
-  if (cached) {
-    return cached;
+async function connectToDatabase(): Promise<typeof mongoose> {
+  if (cached.conn) {
+    return cached.conn;
   }
 
-  const client = new MongoClient(MONGO_URL as string);
-
-  cached = client.connect().then((client) => {
-    return {
-      client,
-      db: client.db("zoga"),
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
     };
-  });
 
-  globalWithMongo._mongoClientPromise = cached;
+    cached.promise = mongoose
+      .connect(MONGO_URL as string, opts)
+      .then((mongoose) => {
+        return mongoose;
+      });
+  }
 
-  return cached;
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
 }
 
 export default connectToDatabase;
-
