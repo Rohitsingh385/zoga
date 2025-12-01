@@ -179,32 +179,32 @@ const servicesList = [
   {
     icon: Layout,
     title: "Website Development",
-    desc: "Enterprise-grade headless architecture on Next.js.",
+    desc: "Websites that load before you blink. Built on Next.js because we believe in speed, not excuses.",
   },
   {
     icon: Smartphone,
     title: "Mobile Apps",
-    desc: "Native-quality experiences using React Native or Swift/Kotlin.",
+    desc: "Apps so smooth, your users will think they're using magic. (It's just really good code.)",
   },
   {
     icon: PenTool,
     title: "UI/UX Design",
-    desc: "Human-centric design systems built for engagement and conversion.",
+    desc: "Designs that make people go 'wow' AND click 'buy'. Beauty with brains, basically.",
   },
   {
     icon: Database,
     title: "Full-Stack Development",
-    desc: "End-to-end platform creation from database to frontend.",
+    desc: "From database to frontend, we build the whole thing. No finger-pointing, just results.",
   },
   {
     icon: TrendingUp,
     title: "SEO & Digital Growth",
-    desc: "Technical SEO integration and growth strategy execution.",
+    desc: "Get found on Google before your chai gets cold. Real traffic, real customers, real growth.",
   },
   {
     icon: RefreshCcw,
     title: "Maintenance & Support",
-    desc: "24/7 proactive monitoring and optimization.",
+    desc: "We don't ghost after launch. 24/7 support because your business doesn't sleep, and neither do we.",
   },
 ];
 
@@ -212,31 +212,31 @@ const detailedServices = [
   {
     title: "Website Development",
     content:
-      "We don't just launch sites; we deploy performance machines. Leveraging Next.js and Vercel for instant loading and scale. This ensures a flawless user experience and a foundational edge in search rankings.",
+      "We don't just build websites — we craft digital experiences that make your competitors nervous. Using Next.js and Vercel, your site loads faster than your morning alarm. And yes, Google notices.",
     bullets: [
-      "Headless CMS integration (Contentful, Sanity)",
-      "Scalable serverless deployment",
-      "Custom animation libraries",
+      "Headless CMS integration (Contentful, Sanity, Strapi)",
+      "Serverless deployment that scales automatically",
+      "Custom animations that make users go 'ooh'",
     ],
   },
   {
     title: "UI/UX Design Systems",
     content:
-      "Our design process is rooted in behavioral psychology. We engineer emotion, creating design systems that reduce cognitive load and drive users effortlessly towards key actions. We deliver meticulous documentation for future scale.",
+      "Pretty is nice. Pretty that converts? That's art. We design interfaces based on how humans actually think (spoiler: it's not always logical). Every pixel has a purpose, every interaction tells a story.",
     bullets: [
-      "User journey mapping",
-      "High-fidelity prototyping",
-      "Accessibility compliance (WCAG)",
+      "User journey mapping (we stalk your users, ethically)",
+      "High-fidelity prototypes you can actually click",
+      "Accessibility compliance (because everyone deserves good UX)",
     ],
   },
   {
     title: "SEO & Digital Growth",
     content:
-      "Growth is not accidental. We hardwire your platform for maximum discoverability. Our approach combines technical SEO audits, content strategy planning, and continuous performance monitoring to ensure organic leadership.",
+      "Ranking on page 2 of Google is like opening a shop in a ghost town. We make sure you're on page 1, where the action is. Technical SEO, content strategy, and continuous optimization — the whole package.",
     bullets: [
-      "Technical SEO audits",
-      "Core Web Vitals optimization",
-      "Conversion Rate Optimization (CRO)",
+      "Technical SEO audits (we find what's broken)",
+      "Core Web Vitals optimization (speed matters)",
+      "Conversion Rate Optimization (more clicks, more customers)",
     ],
   },
 ];

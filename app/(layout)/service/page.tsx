@@ -1,7 +1,8 @@
 "use client";
 
-import type { ServiceData, ServiceId, VisualComponent } from "@/lib/type";
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import type { ServiceData, ServiceId, VisualComponent } from "@/lib/type";
 import { AnimatePresence, motion, useMotionValue } from "framer-motion";
 import {
   Aperture,
@@ -10,14 +11,12 @@ import {
   Layout,
   Mail,
   MapPin,
-  Menu,
   MessageSquare,
   Send,
   Target,
   Terminal,
   TrendingUp,
   User,
-  X,
   Zap,
 } from "lucide-react";
 import React, {
@@ -153,9 +152,9 @@ const SERVICES_DATA: ServiceData[] = [
 // --- Global Utilities ---
 
 // Define custom Tailwind-like classes for dynamic use
-const textPrimary = "text-white";
+const textPrimary = "text-slate-900 dark:text-white";
 const accentGradient =
-  "bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-indigo-500";
+  "bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 dark:from-cyan-400 to-indigo-600 dark:to-indigo-500";
 
 // Function to handle magnetic hover effect
 const useMagnetic = (
@@ -203,9 +202,9 @@ const CinematicTitle: React.FC<CinematicTitleProps> = ({
   children,
   colorClass,
 }) => (
-  <h2 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-white uppercase text-center mb-4 transition-all duration-500">
+  <h2 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-slate-900 dark:text-white uppercase text-center mb-4 transition-all duration-500">
     <span
-      className={`text-${colorClass}-400 drop-shadow-[0_0_15px_rgba(var(--color-${colorClass}-400-rgb),0.5)]`}
+      className={`text-${colorClass}-600 dark:text-${colorClass}-400 drop-shadow-[0_0_15px_rgba(var(--color-${colorClass}-400-rgb),0.5)]`}
     >
       {children}
     </span>
@@ -283,19 +282,19 @@ const ServiceBlock = ({ data, children }: ServiceBlockProps) => {
   return (
     <section
       id={data.id}
-      className={`relative py-32 md:py-48 px-4 overflow-hidden min-h-screen flex flex-col justify-center transition-all duration-1000`}
+      className={`relative py-32 md:py-48 px-4 overflow-hidden min-h-screen flex flex-col justify-center transition-all duration-1000 bg-white dark:bg-transparent`}
     >
       <div
-        className={`absolute inset-0 opacity-10 transition-opacity duration-1000 
+        className={`absolute inset-0 opacity-10 dark:opacity-10 transition-opacity duration-1000
                     bg-linear-to-br from-${data.color}-900/50 to-transparent`}
       >
         <div
-          className={`absolute w-[400px] h-[400px] rounded-full filter blur-3xl opacity-30 
+          className={`absolute w-[400px] h-[400px] rounded-full filter blur-3xl opacity-30
                       bg-${data.color}-500/20 animate-blob top-1/4 left-[10%]`}
         ></div>
 
         <div
-          className={`absolute w-[300px] h-[300px] rounded-full filter blur-3xl opacity-20 
+          className={`absolute w-[300px] h-[300px] rounded-full filter blur-3xl opacity-20
                       bg-${data.accent}-500/30 animate-blob animation-delay-4000 bottom-[10%] right-[10%]`}
         ></div>
       </div>
@@ -307,20 +306,22 @@ const ServiceBlock = ({ data, children }: ServiceBlockProps) => {
               {data.title}
             </CinematicTitle>
 
-            <h3 className={`text-xl font-medium text-${data.accent}-300`}>
+            <h3
+              className={`text-xl font-medium text-${data.accent}-600 dark:text-${data.accent}-300`}
+            >
               {data.subtitle}
             </h3>
 
-            <p className="text-gray-300 text-lg leading-relaxed max-w-lg lg:max-w-none mx-auto">
+            <p className="text-slate-600 dark:text-gray-300 text-lg leading-relaxed max-w-lg lg:max-w-none mx-auto">
               {data.copy}
             </p>
 
-            <div className="mt-8 pt-4 border-t border-gray-800">
-              <h4 className="text-white font-semibold mb-3 text-lg">
+            <div className="mt-8 pt-4 border-t border-slate-200 dark:border-gray-800">
+              <h4 className="text-slate-900 dark:text-white font-semibold mb-3 text-lg">
                 What You Get:
               </h4>
 
-              <ul className="grid grid-cols-2 gap-2 text-gray-400 text-sm list-none p-0">
+              <ul className="grid grid-cols-2 gap-2 text-slate-600 dark:text-gray-400 text-sm list-none p-0">
                 {data.deliverables.map((item: string, index: number) => (
                   <li key={index} className="flex items-center space-x-2">
                     <span className={`text-${data.color}-500`}>&mdash;</span>
@@ -332,14 +333,14 @@ const ServiceBlock = ({ data, children }: ServiceBlockProps) => {
 
             <div className="mt-6">
               <p
-                className={`text-base font-bold text-${data.color}-400 bg-gray-900/50 p-3 rounded-lg border border-${data.accent}-700/50`}
+                className={`text-base font-bold text-${data.color}-600 dark:text-${data.color}-400 bg-slate-100 dark:bg-gray-900/50 p-3 rounded-lg border border-${data.accent}-300 dark:border-${data.accent}-700/50`}
               >
                 TRUST FACTOR: {data.trust}
               </p>
             </div>
 
             <button
-              className={`mt-8 py-3 px-8 text-lg font-semibold rounded-full bg-${data.color}-600 text-black shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.03] magnetic-target`}
+              className={`mt-8 py-3 px-8 text-lg font-semibold rounded-full bg-${data.color}-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.03] magnetic-target`}
               ref={magneticButtonRef}
               onClick={() => console.log(`Inquiry for ${data.title}`)}
             >
@@ -371,6 +372,7 @@ const ContactForm = () => {
 
   const [isSending, setIsSending] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [isError, setIsError] = useState<boolean>(false);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -378,19 +380,40 @@ const ContactForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSending(true);
     setMessage("");
+    setIsError(false);
 
-    setTimeout(() => {
-      console.log("Form Submitted:", formData);
-      setMessage(
-        "Thank you! Your inquiry has been received. We will respond within 24 hours."
-      );
-      setFormData({ name: "", email: "", message: "" });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          source: "services",
+        }),
+      });
+
+      if (response.ok) {
+        setMessage(
+          "Thank you! Your inquiry has been received. We will respond within 24 hours."
+        );
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        const data = await response.json();
+        setMessage(data.error || "Something went wrong. Please try again.");
+        setIsError(true);
+      }
+    } catch {
+      setMessage("Network error. Please check your connection and try again.");
+      setIsError(true);
+    } finally {
       setIsSending(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -507,15 +530,17 @@ const ContactForm = () => {
           </div>
         </div>
 
-        {/* Success Message */}
+        {/* Status Message */}
         {message && (
           <p
-            className="
-              p-3 rounded-xl text-sm font-semibold 
-              text-emerald-700 bg-emerald-100 
-              dark:bg-emerald-900 dark:text-emerald-300 
-              animate-fadeIn
-            "
+            className={`
+              p-3 rounded-xl text-sm font-semibold animate-fadeIn
+              ${
+                isError
+                  ? "text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300"
+                  : "text-emerald-700 bg-emerald-100 dark:bg-emerald-900 dark:text-emerald-300"
+              }
+            `}
           >
             {message}
           </p>
@@ -1198,7 +1223,6 @@ export const MarketingVisual = ({ color, accent }: MarketingVisualProps) => {
       duration: 3 + Math.random() * 2,
     }));
 
-     
     setTimeout(() => {
       setParticlePositions(positions);
     }, 0);
@@ -1484,7 +1508,7 @@ const ProcessTimeline = () => {
   ];
 
   return (
-    <div className="mb-24 px-4 max-w-7xl mx-auto">
+    <div className="mb-24 px-4 max-w-7xl mx-auto py-16 bg-slate-50 dark:bg-transparent rounded-3xl transition-colors duration-300">
       <h2
         className={`text-5xl font-bold tracking-tighter mb-12 text-center ${textPrimary}`}
       >
@@ -1527,7 +1551,7 @@ const ProcessTimeline = () => {
             >
               {step.name}
             </h3>
-            <p className="text-gray-400 text-sm mt-2 hidden md:block">
+            <p className="text-slate-600 dark:text-gray-400 text-sm mt-2 hidden md:block">
               {step.desc}
             </p>
             <div className="h-1 w-1/2 mx-auto mt-2 bg-indigo-500/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1618,45 +1642,8 @@ const WebDevVisual: VisualComponent = ({ color, accent }) => {
 // --- Main App Component ---
 
 const App = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const headerRef = useRef<HTMLDivElement | null>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
   useMagnetic(ctaRef, 0.1);
-
-  const [isDark, setIsDark] = useState(true);
-  const [view, setView] = useState("home");
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDark);
-  }, [isDark]);
-
-  // Reduced magnetic strength for smoother feel
-
-  // Scroll handler for subtle header effect
-  useEffect(() => {
-    const handleScroll = () => {
-      if (headerRef.current) {
-        if (window.scrollY > 50) {
-          headerRef.current.classList.add(
-            "bg-black/80",
-            "backdrop-blur-md",
-            "border-b",
-            "border-gray-800"
-          );
-        } else {
-          headerRef.current.classList.remove(
-            "bg-black/80",
-            "backdrop-blur-md",
-            "border-b",
-            "border-gray-800"
-          );
-        }
-      }
-    };
-    window.addEventListener("scroll", handleScroll as EventListener);
-    return () =>
-      window.removeEventListener("scroll", handleScroll as EventListener);
-  }, []);
 
   // Map service IDs to their visual components
 
@@ -1671,7 +1658,7 @@ const App = () => {
   };
 
   return (
-    <div className="font-sans min-h-screen bg-black text-white antialiased overflow-x-hidden">
+    <div className="font-sans min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-white antialiased overflow-x-hidden transition-colors duration-300">
       {/* --- Global Styles for Animations & Glow --- */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -1749,78 +1736,28 @@ const App = () => {
 
       `}</style>
 
-      {/* --- HEADER (Fixed, Glass Reflection) --- */}
-      <header
-        ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
-          <a
-            href="#hero"
-            className="text-3xl font-extrabold tracking-tight text-white drop-shadow-neon"
-          >
-            <span className="flex items-center">
-              <Code className="h-6 w-6 mr-2 text-cyan-400" />
-              ZOGA
-            </span>
-          </a>
-          <nav className="hidden md:flex space-x-8">
-            {SERVICES_DATA.map((service) => (
-              <a
-                key={service.id}
-                href={`#${service.id}`}
-                className={`text-sm font-medium text-gray-400 hover:text-${service.color}-400 transition-colors duration-200`}
-              >
-                {service.title.split(" ")[0]}
-              </a>
-            ))}
-          </nav>
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-md text-gray-300 hover:bg-gray-800 transition-colors duration-200"
-          >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-black/90 backdrop-blur-md border-t border-gray-800 py-4 absolute w-full">
-            {SERVICES_DATA.map((service) => (
-              <a
-                key={service.id}
-                href={`#${service.id}`}
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-6 py-2 text-base font-medium text-gray-300 hover:text-${service.color}-400 hover:bg-gray-900 transition-colors duration-200`}
-              >
-                {service.title}
-              </a>
-            ))}
-          </div>
-        )}
-      </header>
+      {/* Shared Navbar */}
+      <Navbar />
 
       {/* --- MAIN CONTENT SECTIONS --- */}
       <main>
         {/* HERO SECTION: Cinematic Intro */}
         <section
           id="hero"
-          className="pt-40 pb-20 min-h-screen flex items-center bg-black transition-colors duration-300"
+          className="pt-40 pb-20 min-h-screen flex items-center bg-gradient-to-b from-slate-100 to-white dark:from-black dark:to-zinc-900 transition-colors duration-300"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-black tracking-tighter text-white mb-6 leading-tight">
-              <span className="text-gray-700 block text-2xl mb-4 tracking-widest uppercase">
+            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-black tracking-tighter text-slate-900 dark:text-white mb-6 leading-tight">
+              <span className="text-slate-500 dark:text-gray-700 block text-2xl mb-4 tracking-widest uppercase">
                 THE SERVICE ZOGA
               </span>
               ENGINEERING{" "}
-              <span className="text-cyan-400 drop-shadow-neon">RARE</span>{" "}
+              <span className="text-cyan-500 dark:text-cyan-400 drop-shadow-neon">
+                RARE
+              </span>{" "}
               OUTCOMES
             </h1>
-            <p className="mt-8 max-w-4xl mx-auto text-xl text-gray-400 cinematic-spacing">
+            <p className="mt-8 max-w-4xl mx-auto text-xl text-slate-600 dark:text-gray-400 cinematic-spacing">
               We transcend the typical agency model. Each discipline is a
               dedicated visual world, governed by unique physics and
               unparalleled expertise. Prepare for the ultimate digital
@@ -1828,7 +1765,7 @@ const App = () => {
             </p>
             <a
               href="#webdev"
-              className="inline-flex items-center justify-center mt-12 px-10 py-4 border border-cyan-400 text-lg font-semibold rounded-full text-white bg-black hover:bg-cyan-900/50 transition-transform duration-500 transform hover:scale-105"
+              className="inline-flex items-center justify-center mt-12 px-10 py-4 border border-cyan-500 dark:border-cyan-400 text-lg font-semibold rounded-full text-white bg-cyan-600 dark:bg-black hover:bg-cyan-700 dark:hover:bg-cyan-900/50 transition-transform duration-500 transform hover:scale-105"
             >
               Explore Our Worlds
             </a>
@@ -1855,14 +1792,7 @@ const App = () => {
       </main>
 
       {/* --- FOOTER (Minimalist) --- */}
-      <footer className="bg-black border-t border-gray-900 py-10">
-        <div className="max-w-7xl mx-auto px-4 text-center text-gray-600 text-sm">
-          <p>
-            &copy; {new Date().getFullYear()} The Nexus Digital. Confidential
-            Strategy Partner.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
