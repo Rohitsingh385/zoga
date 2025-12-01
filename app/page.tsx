@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import {
   motion,
   useAnimation,
@@ -70,7 +70,7 @@ const SERVICES = [
   {
     id: "web",
     title: "Web Development",
-    desc: "We build websites that actually work — fast, secure, and Google-friendly. No templates. Just pure craftsmanship that makes your competitors wonder 'how?'",
+    desc: "Templates are for people who've given up on life. We handcraft blazing-fast websites that load before you finish blinking. Your competitors will need therapy after seeing your site. 🚀",
     icon: Code2,
     color: "from-blue-600 to-cyan-500",
     span: "md:col-span-2",
@@ -78,7 +78,7 @@ const SERVICES = [
   {
     id: "app",
     title: "Mobile Apps",
-    desc: "iOS & Android apps so smooth, users will think it's magic. (Spoiler: It's just really good code and a lot of coffee.)",
+    desc: "Apps so buttery smooth, Apple and Google will ask for our secrets. (We won't tell them. Client confidentiality and all that jazz.) ✨",
     icon: Smartphone,
     color: "from-purple-600 to-pink-500",
     span: "md:col-span-1",
@@ -86,7 +86,7 @@ const SERVICES = [
   {
     id: "design",
     title: "UI/UX Design",
-    desc: "Designs that look gorgeous AND convert. Because pretty doesn't pay bills — but pretty that sells? Now that's art.",
+    desc: "We design interfaces that make users fall in love — with your product, not us. Though that happens too. A lot, actually. 💜",
     icon: Palette,
     color: "from-orange-500 to-red-500",
     span: "md:col-span-1",
@@ -94,7 +94,7 @@ const SERVICES = [
   {
     id: "growth",
     title: "SEO & Growth",
-    desc: "Get found on Google before your chai gets cold. Organic traffic that brings real customers, not just bots pretending to be interested.",
+    desc: "Page 2 of Google is where websites go to die. We resurrect yours to Page 1 — where the customers, money, and glory live. No black magic, just brilliant strategy. 📈",
     icon: LineChart,
     color: "from-green-500 to-emerald-500",
     span: "md:col-span-2",
@@ -102,7 +102,7 @@ const SERVICES = [
   {
     id: "video",
     title: "Video Production",
-    desc: "From scroll-stopping reels to cinematic brand films. We turn your vision into content that people actually watch (and share).",
+    desc: "In a world of 3-second attention spans, we create videos people actually finish watching. Reels, ads, brand films — all scroll-stopping, share-worthy content. 🎬",
     icon: Video,
     color: "from-rose-500 to-fuchsia-500",
     span: "md:col-span-1",
@@ -110,7 +110,7 @@ const SERVICES = [
   {
     id: "marketing",
     title: "Digital Marketing",
-    desc: "Ads that convert, not just impressions that look good in reports. Real ROI, real growth, real talk.",
+    desc: "We don't burn your ad budget on 'brand awareness'. Every rupee comes back with friends. Meta, Google, YouTube — we speak their language fluently. 💰",
     icon: Megaphone,
     color: "from-indigo-600 to-blue-500",
     span: "md:col-span-1",
@@ -153,17 +153,17 @@ const PROJECTS = [
 const WHY_US = [
   {
     title: "Ranchi Born, Globally Trusted",
-    desc: "From the heart of Jharkhand to clients worldwide. We deliver Silicon Valley quality without the Silicon Valley invoice. 💪",
+    desc: "From the heart of Jharkhand to clients across Mumbai, Delhi, Bangalore, and beyond. Silicon Valley quality, desi prices. Your CFO will thank us. 💪",
     icon: Globe,
   },
   {
     title: "We Actually Answer Calls",
-    desc: "24/7 support that doesn't involve 'press 1 for...'. Real humans, real solutions, real fast. Ghost mode? Not our thing.",
+    desc: "Revolutionary concept, we know! 24/7 support with real humans who speak your language. No 'your call is important to us' nonsense. We pick up. Period.",
     icon: Phone,
   },
   {
     title: "Your Growth = Our Obsession",
-    desc: "Every rupee you invest should multiply. We build digital assets that generate revenue, not just 'brand awareness'.",
+    desc: "We lose sleep over your metrics so you don't have to. Every rupee invested should multiply — that's not a promise, that's our business model. 📈",
     icon: TrendingUp,
   },
 ];
@@ -222,20 +222,22 @@ const HomeAbout = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
             We don’t just build websites. <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-              We build digital legacies.
+              We build digital empires.
             </span>
           </h2>
 
           <p className="text-slate-400 text-lg mb-6 leading-relaxed">
-            Zoga is a new-age digital engineering lab. We bridge the gap between
-            aesthetic perfection and technical robustness. While others use
-            templates, we forge custom digital environments tailored to your
-            brand&apos;s DNA.
+            Zoga is where obsessive engineering meets creative madness. While
+            your competitors are still figuring out WordPress, we&apos;re
+            crafting custom digital ecosystems that make their websites look
+            like they were built in 2005. (No offense to 2005.)
           </p>
 
           <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-            From complex SaaS dashboards to immersive 3D marketing sites, our
-            output is consistently world-class, secure, and built for scale.
+            From complex SaaS dashboards that don&apos;t make users cry, to
+            marketing sites so beautiful they should be in museums — we deliver
+            world-class, secure, and infinitely scalable solutions. Based in
+            Ranchi, trusted across India and beyond.
           </p>
 
           {/* Stats Row */}
@@ -455,7 +457,7 @@ const REVIEWS = [
     title: "CEO, TechNova Solutions",
     rating: 5,
     quote:
-      "Honestly? I was skeptical at first. Another agency, another promise. But Zoga delivered something remarkable. Our site loads faster than my coffee machine now, and conversions jumped 340%. These folks care.",
+      "I've worked with agencies that promised the moon and delivered a flashlight. Zoga? They promised results and delivered a rocket ship. Our conversions jumped 340% and our site loads faster than my morning chai brews. Absolute legends.",
   },
   {
     id: 2,
@@ -463,7 +465,7 @@ const REVIEWS = [
     title: "Head of Product, FinEdge",
     rating: 5,
     quote:
-      "We needed complex fintech dashboards that didn't look like a 2005 spreadsheet. Zoga made data beautiful AND functional. Our users actually enjoy looking at charts now. That's witchcraft!",
+      "Our fintech dashboard used to look like Excel had a bad day. Zoga transformed it into something our users actually WANT to look at. Data visualization that doesn't induce headaches? Revolutionary. These folks are wizards.",
   },
   {
     id: 3,
@@ -471,7 +473,7 @@ const REVIEWS = [
     title: "Founder, UrbanFlow",
     rating: 5,
     quote:
-      "Worked with 7 agencies before. SEVEN. Zoga is the first one where I didn't have to explain things twice. They understood our vision, improved it, and delivered ahead of schedule. Rare breed.",
+      "Seven agencies. SEVEN. All of them made me repeat myself like a broken record. Zoga understood our vision in one call, improved it, and delivered ahead of schedule. I didn't know agencies like this existed.",
   },
   {
     id: 4,
@@ -479,7 +481,7 @@ const REVIEWS = [
     title: "Director, Global Enterprise",
     rating: 5,
     quote:
-      "From Mumbai to Ranchi felt like a risk. Turned out to be the best decision. World-class quality, genuine communication, and they actually pick up calls on weekends. Where else do you get that?",
+      "Choosing a Ranchi agency over Mumbai felt risky. Best. Decision. Ever. World-class quality, transparent communication, and they actually answer calls on weekends. My Mumbai agency never did that!",
   },
   {
     id: 5,
@@ -487,7 +489,7 @@ const REVIEWS = [
     title: "Partner, AlphaVC",
     rating: 5,
     quote:
-      "We've funded 50+ startups. The ones using Zoga consistently outperform on digital metrics. Not a coincidence. These guys understand what makes products tick.",
+      "We've funded 50+ startups. The ones using Zoga consistently crush their digital metrics. It's not luck — these folks genuinely understand what makes products succeed. Our portfolio companies love them.",
   },
 ];
 
@@ -904,10 +906,11 @@ const Hero = () => {
             <div className="relative mb-12 max-w-lg mx-auto lg:mx-0">
               <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full opacity-0 lg:opacity-100 shadow-lg" />
               <p className="text-lg md:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium lg:pl-4">
-                We engineer bespoke digital systems that convert traffic into
-                territory. Precision infrastructure for brands that demand{" "}
+                We craft digital experiences that turn visitors into customers,
+                and customers into raving fans. From Mumbai to Mangalore, Delhi
+                to Dhanbad — brands trust us for{" "}
                 <span className="text-zinc-900 dark:text-white font-bold">
-                  absolute authority
+                  results that actually matter
                 </span>
                 .
               </p>
