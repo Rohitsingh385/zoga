@@ -70,7 +70,7 @@ const SERVICES = [
   {
     id: "web",
     title: "Web Development",
-    desc: "Templates are for people who've given up on life. We handcraft blazing-fast websites that load before you finish blinking. Your competitors will need therapy after seeing your site. 🚀",
+    desc: "Templates are for people who've given up on life. We handcraft blazing-fast websites that load before you finish blinking. Your competitors will need therapy after seeing your site.",
     icon: Code2,
     color: "from-blue-600 to-cyan-500",
     span: "md:col-span-2",
@@ -78,7 +78,7 @@ const SERVICES = [
   {
     id: "app",
     title: "Mobile Apps",
-    desc: "Apps so buttery smooth, Apple and Google will ask for our secrets. (We won't tell them. Client confidentiality and all that jazz.) ✨",
+    desc: "Apps so buttery smooth, Apple and Google will ask for our secrets. We won't tell them. Client confidentiality and all that jazz.",
     icon: Smartphone,
     color: "from-purple-600 to-pink-500",
     span: "md:col-span-1",
@@ -86,7 +86,7 @@ const SERVICES = [
   {
     id: "design",
     title: "UI/UX Design",
-    desc: "We design interfaces that make users fall in love — with your product, not us. Though that happens too. A lot, actually. 💜",
+    desc: "We design interfaces that make users fall in love with your product, not us. Though that happens too. A lot, actually.",
     icon: Palette,
     color: "from-orange-500 to-red-500",
     span: "md:col-span-1",
@@ -94,7 +94,7 @@ const SERVICES = [
   {
     id: "growth",
     title: "SEO & Growth",
-    desc: "Page 2 of Google is where websites go to die. We resurrect yours to Page 1 — where the customers, money, and glory live. No black magic, just brilliant strategy. 📈",
+    desc: "Page 2 of Google is where websites go to die. We resurrect yours to Page 1 where the customers, money, and glory live. No black magic, just brilliant strategy.",
     icon: LineChart,
     color: "from-green-500 to-emerald-500",
     span: "md:col-span-2",
@@ -102,7 +102,7 @@ const SERVICES = [
   {
     id: "video",
     title: "Video Production",
-    desc: "In a world of 3-second attention spans, we create videos people actually finish watching. Reels, ads, brand films — all scroll-stopping, share-worthy content. 🎬",
+    desc: "In a world of 3-second attention spans, we create videos people actually finish watching. Reels, ads, brand films — all scroll-stopping, share-worthy content.",
     icon: Video,
     color: "from-rose-500 to-fuchsia-500",
     span: "md:col-span-1",
@@ -110,7 +110,7 @@ const SERVICES = [
   {
     id: "marketing",
     title: "Digital Marketing",
-    desc: "We don't burn your ad budget on 'brand awareness'. Every rupee comes back with friends. Meta, Google, YouTube — we speak their language fluently. 💰",
+    desc: "We don't burn your ad budget on 'brand awareness'. Every rupee comes back with friends. Meta, Google, YouTube — we speak their language fluently.",
     icon: Megaphone,
     color: "from-indigo-600 to-blue-500",
     span: "md:col-span-1",
@@ -153,7 +153,7 @@ const PROJECTS = [
 const WHY_US = [
   {
     title: "Ranchi Born, Globally Trusted",
-    desc: "From the heart of Jharkhand to clients across Mumbai, Delhi, Bangalore, and beyond. Silicon Valley quality, desi prices. Your CFO will thank us. 💪",
+    desc: "From the heart of Jharkhand to clients across Mumbai, Delhi, Bangalore, and beyond. Silicon Valley quality at competitive prices. Your CFO will thank us.",
     icon: Globe,
   },
   {
@@ -163,7 +163,7 @@ const WHY_US = [
   },
   {
     title: "Your Growth = Our Obsession",
-    desc: "We lose sleep over your metrics so you don't have to. Every rupee invested should multiply — that's not a promise, that's our business model. 📈",
+    desc: "We lose sleep over your metrics so you don't have to. Every rupee invested should multiply — that's not a promise, that's our business model.",
     icon: TrendingUp,
   },
 ];
@@ -1335,7 +1335,7 @@ const VideoProduction = () => {
                   className="px-4 py-2 rounded-xl text-sm font-semibold 
               bg-white/20 backdrop-blur-md border border-white/30 text-white shadow-lg"
                 >
-                  🎬 Main Showreel
+                  Main Showreel
                 </div>
               </div>
             </div>
