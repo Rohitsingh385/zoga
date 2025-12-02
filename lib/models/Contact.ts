@@ -111,7 +111,14 @@ const ContactSchema = new Schema<IContact>(
     source: {
       type: String,
       default: "website",
-      enum: ["website", "homepage", "service-page", "referral", "other"],
+      enum: [
+        "website",
+        "homepage",
+        "service-page",
+        "services",
+        "referral",
+        "other",
+      ],
     },
     ipAddress: {
       type: String,
