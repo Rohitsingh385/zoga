@@ -307,15 +307,43 @@ const HomeAbout = () => {
 
               {/* Image Card */}
               <div className="relative h-48 rounded-2xl overflow-hidden border border-white/10 group">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10" />
-                {/* Replace with actual office/team pic */}
-                <div className="absolute inset-0 bg-slate-800 animate-pulse" />
-                <div className="absolute bottom-4 left-4 z-20">
-                  <span className="text-xs font-mono text-green-400">
-                    ● System Online
-                  </span>
-                </div>
-              </div>
+
+  {/* Gradient overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-20" />
+
+  {/* Abstract neon blobs */}
+  <div className="absolute inset-0 z-0">
+    <div className="absolute -top-10 -left-10 w-40 h-40 bg-purple-600/30 blur-3xl rounded-full" />
+    <div className="absolute top-10 -right-10 w-36 h-36 bg-cyan-500/30 blur-3xl rounded-full" />
+    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-blue-700/20 blur-[60px] rounded-full" />
+  </div>
+
+  {/* Subtle noise texture */}
+  <div className="absolute inset-0 z-10 opacity-20 mix-blend-overlay pointer-events-none"
+    style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }}
+  />
+
+  {/* Abstract tech-line SVG */}
+  <svg className="absolute inset-0 z-10 opacity-30"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"
+    fill="none" stroke="white" strokeWidth="0.4"
+  >
+    <path d="M0 350 C150 300 350 400 500 350" />
+    <path d="M0 250 C150 200 350 300 500 250" />
+    <path d="M0 150 C150 100 350 200 500 150" />
+  </svg>
+
+  {/* Floating subtle animation */}
+  <div className="absolute inset-0 z-10 animate-[pulse_6s_ease-in-out_infinite] opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,white,transparent_60%)]"></div>
+
+  {/* Bottom status text */}
+  <div className="absolute bottom-4 left-4 z-30">
+    <span className="text-xs font-mono text-green-400">
+      ● System Online
+    </span>
+  </div>
+</div>
+
             </div>
           </div>
         </motion.div>
