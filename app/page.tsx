@@ -1216,9 +1216,9 @@ const MarqueeSection = () => {
   return (
     <div className="py-12 border-y border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-[#050509] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-8 text-center">
-        <p className="text-sm font-bold uppercase tracking-widest text-slate-400">
+        {/* <p className="text-sm font-bold uppercase tracking-widest text-slate-400">
           Trusted by Startups
-        </p>
+        </p> */}
       </div>
       <div className="relative flex overflow-x-hidden group">
         <motion.div
