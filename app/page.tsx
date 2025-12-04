@@ -51,7 +51,7 @@ interface RevealProps {
 }
 
 const PHONE_NUMBER = "+91 98355 04582";
-const EMAIL = "hello@zoga.agency";
+const EMAIL = "hello@Avioni.agency";
 const ADDRESS = "Ranchi, Jharkhand, India";
 
 const stats = [
@@ -230,7 +230,7 @@ const HomeAbout = () => {
           </h2>
 
           <p className="text-slate-400 text-lg mb-6 leading-relaxed">
-            Zoga is where obsessive engineering meets creative madness. While
+            Avioni is where obsessive engineering meets creative madness. While
             your competitors are still figuring out WordPress, we&apos;re
             crafting custom digital ecosystems that make their websites look
             like they were built in 2005. (No offense to 2005.)
@@ -306,43 +306,7 @@ const HomeAbout = () => {
               </div>
 
               {/* Image Card */}
-              <div className="relative h-48 rounded-2xl overflow-hidden border border-white/10 group">
-
-  {/* Gradient overlay */}
-  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-20" />
-
-  {/* Abstract neon blobs */}
-  <div className="absolute inset-0 z-0">
-    <div className="absolute -top-10 -left-10 w-40 h-40 bg-purple-600/30 blur-3xl rounded-full" />
-    <div className="absolute top-10 -right-10 w-36 h-36 bg-cyan-500/30 blur-3xl rounded-full" />
-    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-blue-700/20 blur-[60px] rounded-full" />
-  </div>
-
-  {/* Subtle noise texture */}
-  <div className="absolute inset-0 z-10 opacity-20 mix-blend-overlay pointer-events-none"
-    style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }}
-  />
-
-  {/* Abstract tech-line SVG */}
-  <svg className="absolute inset-0 z-10 opacity-30"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"
-    fill="none" stroke="white" strokeWidth="0.4"
-  >
-    <path d="M0 350 C150 300 350 400 500 350" />
-    <path d="M0 250 C150 200 350 300 500 250" />
-    <path d="M0 150 C150 100 350 200 500 150" />
-  </svg>
-
-  {/* Floating subtle animation */}
-  <div className="absolute inset-0 z-10 animate-[pulse_6s_ease-in-out_infinite] opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,white,transparent_60%)]"></div>
-
-  {/* Bottom status text */}
-  <div className="absolute bottom-4 left-4 z-30">
-    <span className="text-xs font-mono text-green-400">
-      ● System Online
-    </span>
-  </div>
-</div>
+           <AvioniCard/>
 
             </div>
           </div>
@@ -351,8 +315,115 @@ const HomeAbout = () => {
     </section>
   );
 };
+interface AvioniCardProps {
+  text?: string;
+}
+
+const AvioniCard = ({ text = "AVIONI" }: AvioniCardProps) => {
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const glowRef = useRef<HTMLDivElement | null>(null);
+  const starRef = useRef<HTMLDivElement | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current || !glowRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    glowRef.current.style.transform = `translate(${x - 100}px, ${y - 100}px)`;
+  };
+
+  const handleLetterEnter = (e: React.MouseEvent<HTMLSpanElement>) => {
+    const target = e.target as HTMLSpanElement;
+    target.style.opacity = "0.45";
+    target.style.textShadow = "0 0 10px rgba(255,255,255,0.35)";
+  };
+
+  const handleLetterLeave = (e: React.MouseEvent<HTMLSpanElement>) => {
+    const target = e.target as HTMLSpanElement;
+    target.style.opacity = "0.04";
+    target.style.textShadow = "none";
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      className="relative h-52 rounded-2xl overflow-hidden border border-white/10 group cursor-pointer bg-black/40 backdrop-blur-xl"
+    >
+      {/* BACKGROUND BLOBS */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute -top-10 -left-10 w-52 h-52 bg-purple-500/20 blur-3xl rounded-full" />
+        <div className="absolute bottom-0 right-0 w-56 h-56 bg-cyan-400/20 blur-3xl rounded-full" />
+      </div>
+
+      {/* BASE GRID */}
+      <svg
+        className="absolute inset-0 w-full h-full opacity-[0.04] group-hover:opacity-[0.15] transition-opacity duration-300"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern id="gridPattern" width="38" height="38" patternUnits="userSpaceOnUse">
+            <path d="M38 0 L0 0 0 38" stroke="white" strokeWidth="0.25" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#gridPattern)" />
+      </svg>
+
+      {/* SPOTLIGHT GLOW FOLLOWING CURSOR */}
+      <div
+        ref={glowRef}
+        className="absolute w-[200px] h-[200px] rounded-full bg-white/5 blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20"
+        style={{ transform: "translate(-9999px, -9999px)" }}
+      />
+
+      {/* SHOOTING STAR */}
+      <div
+        ref={starRef}
+        className="pointer-events-none absolute w-[2px] h-[2px] bg-white rounded-full opacity-0 z-30"
+      />
+
+      {/* INDIVIDUAL LETTER GLOW */}
+      <div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-40 text-white text-5xl tracking-normal"
+        style={{ fontFamily: '"Cedarville Cursive", cursive' }}
+      >
+        {text.split("").map((char, index) => (
+          <span
+            key={index}
+            onMouseEnter={handleLetterEnter}
+            onMouseLeave={handleLetterLeave}
+            className="transition-all duration-100 pointer-events-auto select-none"
+            style={{
+              opacity: 0.04,
+              padding: "0 1px",
+              transition: "opacity 0.15s ease-out, text-shadow 0.15s ease-out",
+            }}
+          >
+            {char}
+          </span>
+        ))}
+      </div>
+
+      {/* LOWER GRADIENT */}
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-30" />
+
+      {/* STATUS TEXT */}
+      <div className="absolute bottom-4 left-4 z-40">
+        <span className="text-xs font-mono text-green-400 tracking-tight">
+          ● System Online
+        </span>
+      </div>
+    </div>
+  );
+};
+
+
 
 const ReviewCard: React.FC<Props> = ({ review }) => {
+
+
   return (
     <article className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 h-full flex flex-col justify-between">
       <div>
@@ -488,7 +559,7 @@ const REVIEWS = [
     title: "CEO, TechNova Solutions",
     rating: 5,
     quote:
-      "I've worked with agencies that promised the moon and delivered a flashlight. Zoga? They promised results and delivered a rocket ship. Our conversions jumped 340% and our site loads faster than my morning chai brews. Absolute legends.",
+      "I've worked with agencies that promised the moon and delivered a flashlight. Avioni? They promised results and delivered a rocket ship. Our conversions jumped 340% and our site loads faster than my morning chai brews. Absolute legends.",
   },
   {
     id: 2,
@@ -496,7 +567,7 @@ const REVIEWS = [
     title: "Head of Product, FinEdge",
     rating: 5,
     quote:
-      "Our fintech dashboard used to look like Excel had a bad day. Zoga transformed it into something our users actually WANT to look at. Data visualization that doesn't induce headaches? Revolutionary. These folks are wizards.",
+      "Our fintech dashboard used to look like Excel had a bad day. Avioni transformed it into something our users actually WANT to look at. Data visualization that doesn't induce headaches? Revolutionary. These folks are wizards.",
   },
   {
     id: 3,
@@ -504,7 +575,7 @@ const REVIEWS = [
     title: "Founder, UrbanFlow",
     rating: 5,
     quote:
-      "Seven agencies. SEVEN. All of them made me repeat myself like a broken record. Zoga understood our vision in one call, improved it, and delivered ahead of schedule. I didn't know agencies like this existed.",
+      "Seven agencies. SEVEN. All of them made me repeat myself like a broken record. Avioni understood our vision in one call, improved it, and delivered ahead of schedule. I didn't know agencies like this existed.",
   },
   {
     id: 4,
@@ -520,7 +591,7 @@ const REVIEWS = [
     title: "Partner, AlphaVC",
     rating: 5,
     quote:
-      "We've funded 50+ startups. The ones using Zoga consistently crush their digital metrics. It's not luck — these folks genuinely understand what makes products succeed. Our portfolio companies love them.",
+      "We've funded 50+ startups. The ones using Avioni consistently crush their digital metrics. It's not luck — these folks genuinely understand what makes products succeed. Our portfolio companies love them.",
   },
 ];
 
@@ -1159,7 +1230,7 @@ const InteractiveDashboard = () => {
                 <div className="w-3 h-3 rounded-full bg-green-400" />
               </div>
               <div className="ml-4 px-3 py-1 rounded-md bg-white dark:bg-white/5 text-[10px] font-mono opacity-50 w-full max-w-[200px]">
-                zoga.agency/dashboard
+                Avioni.agency/dashboard
               </div>
             </div>
 
@@ -1426,8 +1497,8 @@ const WhyChooseUs = () => (
     className="py-32 bg-slate-50 dark:bg-[#050509] relative overflow-hidden"
   >
     <div className="max-w-7xl mx-auto px-6 relative z-10">
-      <SectionHeading subtitle="Why businesses in Ranchi & beyond trust Zoga.">
-        The Zoga Advantage
+      <SectionHeading subtitle="Why businesses in Ranchi & beyond trust Avioni.">
+        The Avioni Advantage
       </SectionHeading>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -1540,11 +1611,13 @@ const Portfolio = () => (
             </div>
 
             <Button className="group">
+              <Link href='/work'>
               View Case Study{" "}
               <ArrowRight
                 className="inline ml-2 group-hover:translate-x-1 transition-transform"
                 size={16}
               />
+              </Link>
             </Button>
           </div>
         </motion.div>
@@ -1569,7 +1642,7 @@ const ReasonsSection = () => {
         >
           <h2 className="text-5xl md:text-6xl font-extrabold leading-tight text-slate-900 dark:text-white">
             Why Trust{" "}
-            <span className="text-blue-500">The Zoga Difference?</span>
+            <span className="text-blue-500">The Avioni Difference?</span>
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-400 mt-4 max-w-3xl mx-auto">
             Our value proposition is built on three non-negotiable pillars:
