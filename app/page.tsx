@@ -23,6 +23,7 @@ import {
   Camera,
   Code2,
   Crown,
+  ExternalLink,
   Globe,
   Layers,
   LineChart,
@@ -131,25 +132,34 @@ const BRANDS = [
 
 const PROJECTS = [
   {
-    title: "Fintech Dashboard",
-    cat: "SaaS Platform",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000",
+    title: "Ayurakshak",
+    cat: "Healthcare Platform",
+    image: "/our-projects/Ayurakshak.png",
+    gradient: "from-emerald-900/80 to-slate-900/80",
+    description:
+      "A digital bridge between ancient Ayurvedic wisdom and modern healthcare. Serving 10,000+ patients through 55+ hospitals across India.",
+    technologies: ["Next.js", "React", "MongoDB", "Tailwind CSS"],
+    link: "https://ayurakshak.vercel.app/",
+  },
+  {
+    title: "Krishna Mehandi",
+    cat: "Artist Portfolio",
+    image: "/our-projects/KrishnaMehandi.png",
+    gradient: "from-rose-900/80 to-slate-900/80",
+    description:
+      "Where tradition meets technology. A stunning digital showcase for 500+ intricate mehandi designs with seamless booking.",
+    technologies: ["Next.js", "Framer Motion", "TypeScript"],
+    link: "https://krishnamehandiartist.in/",
+  },
+  {
+    title: "Cambridge Trust",
+    cat: "NGO Platform",
+    image: "/our-projects/CambrigeTrust.png",
     gradient: "from-blue-900/80 to-slate-900/80",
-  },
-  {
-    title: "Neon Commerce",
-    cat: "E-Commerce",
-    image:
-      "https://images.unsplash.com/photo-1661956602116-aa6865609028?auto=format&fit=crop&q=80&w=2000",
-    gradient: "from-purple-900/80 to-slate-900/80",
-  },
-  {
-    title: "HealthAI",
-    cat: "Medical App",
-    image:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=2000",
-    gradient: "from-teal-900/80 to-slate-900/80",
+    description:
+      "Empowering education for 500+ underprivileged children. A transparent donation platform for a 12G & 80G certified trust.",
+    technologies: ["Next.js", "Razorpay", "Node.js"],
+    link: "https://cambridgewelfaretrust.org/",
   },
 ];
 
@@ -157,7 +167,7 @@ const WHY_US = [
   {
     title: "Uncompromising Quality",
     desc: "Precision engineering, thoughtful design, and flawless execution. Every pixel and every line of code is crafted to outperform expectations.",
-    icon: Crown, 
+    icon: Crown,
   },
   {
     title: "Premium Work, Fair Pricing",
@@ -306,8 +316,7 @@ const HomeAbout = () => {
               </div>
 
               {/* Image Card */}
-           <AvioniCard/>
-
+              <AvioniCard />
             </div>
           </div>
         </motion.div>
@@ -364,7 +373,12 @@ const AvioniCard = ({ text = "AVIONI" }: AvioniCardProps) => {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <pattern id="gridPattern" width="38" height="38" patternUnits="userSpaceOnUse">
+          <pattern
+            id="gridPattern"
+            width="38"
+            height="38"
+            patternUnits="userSpaceOnUse"
+          >
             <path d="M38 0 L0 0 0 38" stroke="white" strokeWidth="0.25" />
           </pattern>
         </defs>
@@ -419,11 +433,7 @@ const AvioniCard = ({ text = "AVIONI" }: AvioniCardProps) => {
   );
 };
 
-
-
 const ReviewCard: React.FC<Props> = ({ review }) => {
-
-
   return (
     <article className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 h-full flex flex-col justify-between">
       <div>
@@ -1547,7 +1557,7 @@ const WhyChooseUs = () => (
 
 const Portfolio = () => (
   <section id="work" className="py-32 bg-white dark:bg-[#030014]">
-    <SectionHeading subtitle="A glimpse into our engineering standards.">
+    <SectionHeading subtitle="Real projects. Real impact. Real results.">
       Selected Works
     </SectionHeading>
 
@@ -1561,28 +1571,32 @@ const Portfolio = () => (
           className="grid lg:grid-cols-2 gap-12 items-center group"
         >
           {/* Image Side */}
-          <div
-            className={`relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl ${
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl cursor-pointer ${
               i % 2 === 1 ? "lg:order-2" : ""
             }`}
           >
             <div
-              className={`absolute inset-0 bg-gradient-to-br ${project.gradient} z-10 opacity-60 group-hover:opacity-40 transition-opacity duration-500`}
+              className={`absolute inset-0 bg-gradient-to-br ${project.gradient} z-10 opacity-50 group-hover:opacity-30 transition-opacity duration-500`}
             />
             <Image
               src={project.image}
               alt={project.title}
-              width={300}
-              height={200}
-              className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+              width={800}
+              height={600}
+              className="absolute inset-0 w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-700"
             />
+
 
             <div className="absolute bottom-8 left-8 z-20">
               <div className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm font-bold inline-block mb-2">
                 {project.cat}
               </div>
             </div>
-          </div>
+          </a>
 
           {/* Text Side */}
           <div className={`${i % 2 === 1 ? "lg:order-1 lg:text-right" : ""}`}>
@@ -1590,9 +1604,7 @@ const Portfolio = () => (
               {project.title}
             </h3>
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-              A complete digital overhaul focusing on speed, conversion, and
-              user retention. Resulted in a 40% increase in monthly active
-              users.
+              {project.description}
             </p>
 
             <div
@@ -1600,7 +1612,7 @@ const Portfolio = () => (
                 i % 2 === 1 ? "lg:justify-end" : ""
               }`}
             >
-              {["React", "Next.js", "Node.js"].map((tag) => (
+              {project.technologies.map((tag) => (
                 <span
                   key={tag}
                   className="px-3 py-1 rounded-md bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 text-sm font-medium"
@@ -1611,12 +1623,12 @@ const Portfolio = () => (
             </div>
 
             <Button className="group">
-              <Link href='/work'>
-              View Case Study{" "}
-              <ArrowRight
-                className="inline ml-2 group-hover:translate-x-1 transition-transform"
-                size={16}
-              />
+              <Link href="/work">
+                View All Projects{" "}
+                <ArrowRight
+                  className="inline ml-2 group-hover:translate-x-1 transition-transform"
+                  size={16}
+                />
               </Link>
             </Button>
           </div>

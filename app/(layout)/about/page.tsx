@@ -35,6 +35,7 @@ import {
   Zap,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useRef, useState } from "react";
 
 // --- ANIMATION COMPONENTS ---
@@ -152,34 +153,34 @@ const faqs = [
 
 const team = [
   {
-    name: "Alex V.",
-    roles: ["Creative Dir", "UI/UX"],
+    name: "Kush V.",
+    roles: ["SDE", "SEO", "Growth", "Brand"],
+    portfolio: "https://kush-personal-portfolio-my-portfolio.vercel.app/",
     img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&fit=crop",
   },
   {
-    name: "Sarah J.",
-    roles: ["Lead Dev", "System Arch"],
+    name: "Rahul K.",
+    roles: ["UI/UX", "Editor", "Content", "MKTG"],
+    portfolio: "https://rahulkumarci.framer.ai/",
     img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&fit=crop",
   },
   {
-    name: "Davide R.",
-    roles: ["3D Motion", "VFX"],
+    name: "Rohit K.",
+    roles: ["SDE", "Sales"],
+    portfolio: null,
     img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&fit=crop",
   },
   {
-    name: "Emily W.",
-    roles: ["SEO Strat", "Growth"],
+    name: "Tausif A.",
+    roles: ["SDE"],
+    portfolio: null,
     img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&fit=crop",
   },
   {
-    name: "Marcus L.",
-    roles: ["Full Stack", "Security"],
+    name: "Aditya S.",
+    roles: ["Full Stack"],
+    portfolio: null,
     img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&fit=crop",
-  },
-  {
-    name: "Priya K.",
-    roles: ["Copywriter", "Brand"],
-    img: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=400&fit=crop",
   },
 ];
 
@@ -684,7 +685,8 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {/* Responsive grid: 2 cols mobile, 3 on md, and auto-fit on lg+ to fill space evenly */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
             {team.map((member, i) => (
               <motion.div
                 key={i}
@@ -693,9 +695,44 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
                 whileHover={{ y: -5 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="group relative bg-zinc-100 dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/50 transition-colors"
+                className="group relative bg-zinc-100 dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/50 transition-colors flex-1"
               >
-                {/* IMAGE 60% height */}
+                {/* PORTFOLIO ICON */}
+                {member.portfolio && (
+                  <Link
+                    href={member.portfolio}
+                    target="_blank"
+                    className="
+            absolute top-3 right-3
+            w-7 h-7 flex items-center justify-center
+            rounded-full
+            bg-orange-500/10
+            text-orange-500
+            hover:bg-orange-500/20
+            hover:text-orange-400
+            transition-all duration-300
+            backdrop-blur-sm
+            border border-orange-500/20
+          "
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M14 3h7v7m0 0L10 21l-7-7L14 3z"
+                      />
+                    </svg>
+                  </Link>
+                )}
+
+                {/* IMAGE */}
                 <div className="h-[60%] aspect-square rounded-2xl overflow-hidden mb-4 relative">
                   <Image
                     src={member.img}
@@ -711,7 +748,7 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
                   {member.name}
                 </h3>
 
-                {/* ROLES - smaller text */}
+                {/* ROLES */}
                 <div className="flex flex-wrap gap-1 mt-1">
                   {member.roles.map((r) => (
                     <span
