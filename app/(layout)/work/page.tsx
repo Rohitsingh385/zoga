@@ -29,12 +29,13 @@ import {
   Smartphone,
   Star,
   TrendingUp,
-  Video,
+  Video,X,Play,
 } from "lucide-react";
 import Image from "next/image";
 import React, { useMemo, useRef, useState } from "react";
 
 // --- GLOBAL UTILITIES & ANIMATION COMPONENTS ---
+
 
 type NavLinkProps = {
   to: string;
@@ -276,80 +277,201 @@ const portfolioCategories = [
   },
 ];
 
-const projects = [
+// Real client website projects
+const webProjects = [
   {
     id: 1,
-    title: "Nebula Finance",
+    title: "Cambridge Trust",
     cat: "web-app-dev",
-    size: "large",
-    img: "https://images.unsplash.com/photo-1642427749670-f20e2e76ed8c?q=80&w=2000&auto=format&fit=crop",
-    tags: ["Next.js", "FinTech"],
+    size: "wide",
+    img: "/our-projects/CambrigeTrust.png",
+    tags: ["Next.js", "NGO", "Razorpay"],
+    link: "https://cambridgewelfaretrust.org/",
+    description: "Educational charity supporting 500+ children",
   },
   {
     id: 2,
-    title: "Apex Fitness",
+    title: "JankiInfotech",
     cat: "web-app-dev",
-    size: "small",
-    img: "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=1000&auto=format&fit=crop",
-    tags: ["iOS", "React Native"],
+    size: "wide",
+    img: "/our-projects/JankiInfotech.png",
+    tags: ["React", "IT Services", "Node.js"],
+    link: "https://jankiinfotech.com/",
+    description: "Full-service IT firm with 50+ startup clients",
   },
   {
     id: 3,
-    title: "Luxe Estates",
-    cat: "seo",
+    title: "Krishna Mehandi",
+    cat: "web-app-dev",
     size: "tall",
-    img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop",
-    tags: ["SEO", "Growth"],
+    img: "/our-projects/KrishnaMehandi.png",
+    tags: ["Next.js", "Portfolio", "Framer Motion"],
+    link: "https://krishnamehandiartist.in/",
+    description: "Professional mehandi artist with 500+ designs",
   },
   {
     id: 4,
-    title: "Neon Cyberpunk",
-    cat: "video-editing",
-    size: "wide",
-    img: "https://images.unsplash.com/photo-1535016120720-40c6874c3b1c?q=80&w=1000&auto=format&fit=crop",
-    tags: ["VFX", "Premiere"],
+    title: "Ayurakshak",
+    cat: "web-app-dev",
+    size: "large",
+    img: "/our-projects/Ayurakshak.png",
+    tags: ["Next.js", "Healthcare", "MongoDB"],
+    link: "https://ayurakshak.vercel.app/",
+    description: "Naturopathy & Ayurvedic platform serving 10,000+ patients",
   },
   {
     id: 5,
-    title: "Zenith Brand",
-    cat: "designing",
+    title: "Ravi Mehandi",
+    cat: "web-app-dev",
     size: "small",
-    img: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1000&auto=format&fit=crop",
-    tags: ["Identity", "Figma"],
+    img: "/our-projects/RaviMehandi.png",
+    tags: ["Next.js", "Portfolio", "TypeScript"],
+    link: "https://ravi-mehandi.vercel.app/",
+    description: "Traditional mehandi artist with 2000+ clients",
   },
   {
     id: 6,
-    title: "Bean & Brew",
-    cat: "gmb",
+    title: "Shine It Cleaning",
+    cat: "web-app-dev",
     size: "small",
-    img: "https://images.unsplash.com/photo-1517433670267-08bbd4be890f?q=80&w=1000&auto=format&fit=crop",
-    tags: ["GMB", "Local Maps"],
+    img: "/our-projects/ShineItCleaning.png",
+    tags: ["HTML/CSS", "Business", "Local SEO"],
+    link: "https://shineitcleaning.com",
+    description: "Professional cleaning services platform",
   },
   {
     id: 7,
-    title: "Crypto Dash",
-    cat: "web-design",
-    size: "tall",
-    img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000&auto=format&fit=crop",
-    tags: ["UI/UX", "Web3"],
+    title: "DPS Thalwara",
+    cat: "web-app-dev",
+    size: "small",
+    img: "/our-projects/DPS.png",
+    tags: ["Static Site", "Education", "CBSE"],
+    link: "https://dpsthalwara.com",
+    description: "CBSE-affiliated school serving Darbhanga region",
   },
   {
     id: 8,
-    title: "Fashion Edit",
-    cat: "video-editing",
+    title: "Mission Education",
+    cat: "web-app-dev",
     size: "small",
-    img: "https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?q=80&w=1000&auto=format&fit=crop",
-    tags: ["4K", "Grading"],
+    img: "/our-projects/MissionEducation.png",
+    tags: ["React", "Education", "Consulting"],
+    link: "https://missioneducation.info",
+    description: "Education consultancy & admission counselling",
   },
   {
-    id: 9,
-    title: "Urban E-Com",
+  id: 9,
+  title: "Shiva Enviro Lab",
+  cat: "web-app-dev",
+  size: "wide",
+  img: "/our-projects/ShivaEnviroLab.png",
+  tags: ["Environmental Lab", "Testing Services", "Ranchi", "Contact Form"],
+  link: "https://shivaenvirolab.com/",
+  description: "Environmental testing & research lab in Ranchi — water, air, noise analysis, EIA support; ISO-accredited and JSPCB-approved."
+},
+{
+  id: 10,
+  title: "Model School Kanke",
+  cat: "web-app-dev",
+  size: "wide",
+  img: "/our-projects/ModelSchoolKanke.png",
+  tags: ["School", "Education", "Kanke Meshra", "Admissions", "Fee Structure"],
+  link: "https://modelschoolkanke.com/",
+  description: "CM School of Excellence (Model School Kanke) — K-12 school in Meshra, Kanke, Ranchi. Info on curriculum, fees, faculty, contacts and admission."
+}
+  
+];
+
+// YouTube documentary videos
+const videoProjects = [
+  {
+    id: "v1",
+    title: "Brand Documentary",
+    cat: "video-editing",
+    size: "large",
+    videoId: "ieSo-WK4DhY",
+    tags: ["Documentary", "Storytelling"],
+  },
+  {
+    id: "v2",
+    title: "Social Impact Film",
+    cat: "video-editing",
+    size: "tall",
+    videoId: "VpnhhuBUs54",
+    tags: ["Social", "Impact"],
+  },
+  {
+    id: "v3",
+    title: "Cultural Journey",
+    cat: "video-editing",
+    size: "wide",
+    videoId: "Aje2oek3UqY",
+    tags: ["Culture", "Travel"],
+  },
+  {
+    id: "v4",
+    title: "Creative Showcase",
+    cat: "video-editing",
+    size: "small",
+    videoId: "kOd_kwb9n-Q",
+    tags: ["Creative", "Showcase"],
+  },
+  {
+    id: "v5",
+    title: "Visual Story",
+    cat: "video-editing",
+    size: "small",
+    videoId: "ifz87YbZx1k",
+    tags: ["Visual", "Narrative"],
+  },
+];
+
+// Design/SEO/GMB/Marketing showcase projects (placeholder with real aesthetic)
+const otherProjects = [
+  {
+    id: "d1",
+    title: "Luxe Brand Identity",
+    cat: "designing",
+    size: "tall",
+    img: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1000&auto=format&fit=crop",
+    tags: ["Branding", "Identity"],
+  },
+  {
+    id: "d2",
+    title: "Tech Startup SEO",
+    cat: "seo",
+    size: "small",
+    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop",
+    tags: ["SEO", "Growth"],
+  },
+  {
+    id: "d3",
+    title: "Local Cafe GMB",
+    cat: "gmb",
+    size: "small",
+    img: "https://images.unsplash.com/photo-1517433670267-08bbd4be890f?q=80&w=1000&auto=format&fit=crop",
+    tags: ["GMB", "Local"],
+  },
+  {
+    id: "d4",
+    title: "E-Commerce Campaign",
     cat: "digital-marketing",
     size: "wide",
     img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1000&auto=format&fit=crop",
     tags: ["Ads", "Conversion"],
   },
+  {
+    id: "d5",
+    title: "SaaS Dashboard UI",
+    cat: "web-design",
+    size: "large",
+    img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000&auto=format&fit=crop",
+    tags: ["UI/UX", "SaaS"],
+  },
 ];
+
+// Combine all projects for "All" category
+const allProjects = [...webProjects, ...videoProjects, ...otherProjects];
 
 const team = [
   {
@@ -805,11 +927,244 @@ const AboutPage = ({ setView }: { setView: (view: string) => void }) => {
   );
 };
 
+// Custom Video Card with play functionality
+const VideoCard = ({
+  video,
+  onPlay,
+}: {
+  video: (typeof videoProjects)[0];
+  onPlay: (videoId: string) => void;
+}) => {
+  const thumbnailUrl = `https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`;
+
+  return (
+    <div
+      className="relative w-full h-full group cursor-pointer"
+      onClick={() => onPlay(video.videoId)}
+    >
+      <Image
+        src={thumbnailUrl}
+        alt={video.title}
+        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        width={800}
+        height={600}
+      />
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
+
+      {/* Custom Play Button - subtle glowing circle */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.2)] group-hover:shadow-[0_0_50px_rgba(255,255,255,0.4)]">
+          <Play className="w-8 h-8 text-white fill-white ml-1" />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+        <div className="flex gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+          {video.tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-[10px] uppercase font-bold px-2 py-1 bg-white/20 backdrop-blur-md rounded text-white"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h3 className="text-2xl font-bold text-white mb-2 leading-none">
+          {video.title}
+        </h3>
+        <div className="h-1 w-0 bg-purple-500 group-hover:w-16 transition-all duration-500 delay-200" />
+      </div>
+    </div>
+  );
+};
+
+// Website Card with hover link
+const WebsiteCard = ({ project }: { project: (typeof webProjects)[0] }) => {
+  return (
+    <a
+      href={project.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="relative w-full h-full group cursor-pointer block"
+    >
+      <Image
+        src={project.img}
+        alt={project.title}
+        className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
+        width={800}
+        height={600}
+      />
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+
+      {/* Hover Link Button */}
+      <div className="absolute top-6 right-6 scale-0 group-hover:scale-100 transition-transform duration-300 delay-100">
+        <div
+          className="px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-medium flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-white/30 transition-all"
+          title={`Visit ${project.title}`}
+        >
+          Visit Site
+          <ExternalLink className="w-4 h-4" />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+        <div className="flex gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-[10px] uppercase font-bold px-2 py-1 bg-white/20 backdrop-blur-md rounded text-white"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h3 className="text-2xl font-bold text-white mb-1 leading-none">
+          {project.title}
+        </h3>
+        <p className="text-sm text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150">
+          {project.description}
+        </p>
+        <div className="h-1 w-0 bg-purple-500 group-hover:w-16 transition-all duration-500 delay-200 mt-2" />
+      </div>
+    </a>
+  );
+};
+
+// Generic Image Card for other categories
+const ImageCard = ({ project }: { project: (typeof otherProjects)[0] }) => {
+  return (
+    <div className="relative w-full h-full group cursor-pointer">
+      <Image
+        src={project.img}
+        alt={project.title}
+        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        width={800}
+        height={600}
+      />
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+
+      {/* Content */}
+      <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+        <div className="flex gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-[10px] uppercase font-bold px-2 py-1 bg-white/20 backdrop-blur-md rounded text-white"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h3 className="text-3xl font-bold text-white mb-2 leading-none">
+          {project.title}
+        </h3>
+        <div className="h-1 w-0 bg-purple-500 group-hover:w-16 transition-all duration-500 delay-200" />
+      </div>
+
+      {/* Action Icon */}
+      <div className="absolute top-6 right-6 scale-0 group-hover:scale-100 transition-transform duration-300 delay-100">
+        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-purple-500 hover:text-white transition-colors">
+          <ArrowRight className="w-5 h-5 -rotate-45" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Video Modal Component
+const VideoModal = ({
+  videoId,
+  onClose,
+}: {
+  videoId: string | null;
+  onClose: () => void;
+}) => {
+  if (!videoId) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.8, opacity: 0 }}
+        className="relative w-full max-w-5xl aspect-video"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute -top-12 right-0 w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <iframe
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
+          className="w-full h-full rounded-2xl"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// Type definitions for projects
+type WebProject = (typeof webProjects)[0];
+type VideoProject = (typeof videoProjects)[0];
+type OtherProject = (typeof otherProjects)[0];
+type AnyProject = WebProject | VideoProject | OtherProject;
+
 // 2. PORTFOLIO PAGE
 const PortfolioPage = ({ setView }: { setView: (view: string) => void }) => {
   const [filter, setFilter] = useState("all");
-  const filteredProjects =
-    filter === "all" ? projects : projects.filter((p) => p.cat === filter);
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+
+  // Helper to check if project is a video
+  const isVideoProject = (project: AnyProject): project is VideoProject => {
+    return 'videoId' in project;
+  };
+
+  // Helper to check if project is a web project
+  const isWebProject = (project: AnyProject): project is WebProject => {
+    return 'link' in project && 'description' in project;
+  };
+
+  // Get filtered projects based on category - memoized for stability
+  const filteredProjects = useMemo(() => {
+    if (filter === "all") {
+      // Mix of 4 web projects + 3 videos = 7 total for All category
+      const selectedWeb = webProjects.slice(0, 4);
+      const selectedVideos = videoProjects.slice(0, 3);
+      const mixed = [...selectedWeb, ...selectedVideos];
+      // Shuffle for jumbled effect
+      return mixed.sort((a, b) => {
+        const order = [0, 4, 1, 5, 2, 6, 3]; // Interleave pattern
+        return order.indexOf(mixed.indexOf(a)) - order.indexOf(mixed.indexOf(b));
+      });
+    }
+    if (filter === "web-app-dev") {
+      return webProjects;
+    }
+    if (filter === "video-editing") {
+      return videoProjects;
+    }
+    // For other categories, filter from otherProjects
+    return otherProjects.filter((p) => p.cat === filter);
+  }, [filter]);
+
   const activeCatData = portfolioCategories.find((c) => c.id === filter);
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
@@ -935,74 +1290,163 @@ const PortfolioPage = ({ setView }: { setView: (view: string) => void }) => {
         )}
       </AnimatePresence>
 
+      {/* Video Modal */}
+      <AnimatePresence>
+        {activeVideo && (
+          <VideoModal videoId={activeVideo} onClose={() => setActiveVideo(null)} />
+        )}
+      </AnimatePresence>
+
       {/* The "Alive" Grid */}
       <div className="max-w-7xl mx-auto px-6 mb-32 relative z-10">
         <motion.div
           layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[300px]"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, i) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.8, y: 50 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
-                transition={{
-                  duration: 0.6,
-                  delay: i * 0.05,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className={`${
-                  project.size === "large" ? "md:col-span-2 md:row-span-2" : ""
-                } ${project.size === "wide" ? "md:col-span-2" : ""} ${
-                  project.size === "tall" ? "md:row-span-2" : ""
-                }`}
-              >
-                <TiltCard className="h-full w-full">
-                  <SpotlightCard className="rounded-3xl h-full w-full border-zinc-200 dark:border-zinc-800">
-                    <div className="relative w-full h-full group cursor-pointer">
-                      <Image
-                        src={project.img}
-                        alt={project.title}
-                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                        width={800}
-                        height={600}
-                      />
+            {filteredProjects.map((project, i) => {
+              const hasVideo = 'videoId' in project;
+              const hasLink = 'link' in project;
+              const imgSrc = hasVideo
+                ? `https://img.youtube.com/vi/${(project as VideoProject).videoId}/maxresdefault.jpg`
+                : (project as WebProject | OtherProject).img;
 
-                      {/* Dark Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+              return (
+                <motion.div
+                  key={project.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.8, y: 50 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
+                  transition={{
+                    duration: 0.6,
+                    delay: i * 0.05,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className={`${
+                    project.size === "large" ? "md:col-span-2 md:row-span-2" : ""
+                  } ${project.size === "wide" ? "md:col-span-2" : ""} ${
+                    project.size === "tall" ? "md:row-span-2" : ""
+                  }`}
+                >
+                  <TiltCard className="h-full w-full">
+                    <SpotlightCard className="rounded-3xl h-full w-full border-zinc-200 dark:border-zinc-800 overflow-hidden">
+                      {hasVideo ? (
+                        // Video Card
+                        <div
+                          className="relative w-full h-full group cursor-pointer"
+                          onClick={() => setActiveVideo((project as VideoProject).videoId)}
+                        >
+                          <Image
+                            src={imgSrc}
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            width={800}
+                            height={600}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
 
-                      {/* Content Reveal */}
-                      <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                        <div className="flex gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                          {project.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-[10px] uppercase font-bold px-2 py-1 bg-white/20 backdrop-blur-md rounded text-white"
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                          {/* Custom Play Button */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.2)] group-hover:shadow-[0_0_50px_rgba(255,255,255,0.4)]">
+                              <Play className="w-8 h-8 text-white fill-white ml-1" />
+                            </div>
+                          </div>
+
+                          {/* Content */}
+                          <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                            <div className="flex flex-wrap gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                              {project.tags.map((tag) => (
+                                <span key={tag} className="text-[10px] uppercase font-bold px-2 py-1 bg-white/20 backdrop-blur-md rounded text-white">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                            <h3 className="text-2xl font-bold text-white mb-2 leading-none">{project.title}</h3>
+                            <div className="h-1 w-0 bg-purple-500 group-hover:w-16 transition-all duration-500 delay-200" />
+                          </div>
                         </div>
-                        <h3 className="text-3xl font-bold text-white mb-2 leading-none">
-                          {project.title}
-                        </h3>
-                        <div className="h-1 w-0 bg-purple-500 group-hover:w-16 transition-all duration-500 delay-200" />
-                      </div>
+                      ) : hasLink ? (
+                        // Website Card with external link
+                        <a
+                          href={(project as WebProject).link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="relative w-full h-full group cursor-pointer block"
+                        >
+                          <Image
+                            src={imgSrc}
+                            alt={project.title}
+                            className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
+                            width={800}
+                            height={600}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
 
-                      {/* Action Icon */}
-                      <div className="absolute top-6 right-6 scale-0 group-hover:scale-100 transition-transform duration-300 delay-100">
-                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-purple-500 hover:text-white transition-colors">
-                          <ArrowRight className="w-5 h-5 -rotate-45" />
+                          {/* Visit Button */}
+                          <div className="absolute top-6 right-6 scale-0 group-hover:scale-100 transition-transform duration-300 delay-100">
+                            <div className="px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-medium flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-white/30 transition-all">
+                              Visit Site
+                              <ExternalLink className="w-4 h-4" />
+                            </div>
+                          </div>
+
+                          {/* Content */}
+                          <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                            <div className="flex flex-wrap gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                              {project.tags.map((tag) => (
+                                <span key={tag} className="text-[10px] uppercase font-bold px-2 py-1 bg-white/20 backdrop-blur-md rounded text-white">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                            <h3 className="text-2xl font-bold text-white mb-1 leading-none">{project.title}</h3>
+                            {'description' in project && (
+                              <p className="text-sm text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150 line-clamp-2">
+                                {(project as WebProject).description}
+                              </p>
+                            )}
+                            <div className="h-1 w-0 bg-purple-500 group-hover:w-16 transition-all duration-500 delay-200 mt-2" />
+                          </div>
+                        </a>
+                      ) : (
+                        // Generic Image Card (for other categories)
+                        <div className="relative w-full h-full group cursor-pointer">
+                          <Image
+                            src={imgSrc}
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            width={800}
+                            height={600}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+
+                          {/* Content */}
+                          <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                            <div className="flex flex-wrap gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                              {project.tags.map((tag) => (
+                                <span key={tag} className="text-[10px] uppercase font-bold px-2 py-1 bg-white/20 backdrop-blur-md rounded text-white">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                            <h3 className="text-2xl font-bold text-white mb-2 leading-none">{project.title}</h3>
+                            <div className="h-1 w-0 bg-purple-500 group-hover:w-16 transition-all duration-500 delay-200" />
+                          </div>
+
+                          {/* Action Icon */}
+                          <div className="absolute top-6 right-6 scale-0 group-hover:scale-100 transition-transform duration-300 delay-100">
+                            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-purple-500 hover:text-white transition-colors">
+                              <ArrowRight className="w-5 h-5 -rotate-45" />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </SpotlightCard>
-                </TiltCard>
-              </motion.div>
-            ))}
+                      )}
+                    </SpotlightCard>
+                  </TiltCard>
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
       </div>
