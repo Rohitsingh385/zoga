@@ -93,7 +93,7 @@ const SmallNavbar: React.FC<NavbarProps> = ({
               Services
             </Link>
             <Link
-              href="mailto:support@zoga.studio"
+              href="mailto:support@Avioni.studio"
               className="px-4 py-2 bg-purple-500 text-white rounded-full font-semibold text-sm hover:bg-purple-600 transition-colors duration-300 shadow-md shadow-purple-500/30"
             >
               Contact Us
@@ -185,7 +185,7 @@ const SmallNavbar: React.FC<NavbarProps> = ({
                 Services
               </Link>
               <Link
-                href="mailto:support@zoga.studio"
+                href="mailto:support@Avioni.studio"
                 className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 hover:text-purple-500 text-zinc-700 dark:text-zinc-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

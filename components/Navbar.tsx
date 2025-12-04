@@ -14,7 +14,7 @@ import {
   Smartphone,
   Sun,
   Video,
-  X
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -101,16 +101,14 @@ export default function Navbar() {
             <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg shadow-blue-500/20 group-hover:shadow-purple-500/40 transition-all overflow-hidden">
               <Image
                 src="/logowithBGREMOVE.png"
-                alt="Zoga Logo"
+                alt="Avioni Logo"
                 fill
-                className={`object-contain p-1 ${
-                  isDark ? "invert" : ""
-                }`}
+                className={`object-contain p-1 ${isDark ? "invert" : ""}`}
               />
             </div>
 
             <span className="font-bold text-2xl tracking-tight text-slate-900 dark:text-white">
-              Zoga
+              Avioni
             </span>
           </Link>
 
@@ -135,45 +133,58 @@ export default function Navbar() {
                     className="absolute top-[80%] left-1/2 -translate-x-1/2 w-[600px] p-6 bg-white dark:bg-[#0b0b13] rounded-2xl border border-slate-200 dark:border-white/10 shadow-2xl grid grid-cols-2 gap-4"
                   >
                     {SERVICES.map((s) => (
-  <Link
-    key={s.id}
-    href="/service"
-    className="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group"
-  >
-    <div
-      className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${s.color} 
+                      <Link
+                        key={s.id}
+                        href="/service"
+                        className="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group"
+                      >
+                        <div
+                          className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${s.color} 
       flex items-center justify-center text-white 
       p-2 shadow-sm dark:shadow-none 
       transform transition-all duration-200 
       group-hover:scale-[1.04] group-hover:shadow-md`}
-    >
-      <s.icon size={22} className="opacity-95" />
-    </div>
+                        >
+                          <s.icon size={22} className="opacity-95" />
+                        </div>
 
-    <div>
-      <h4 className="font-bold text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
-        {s.title}
-      </h4>
-      <p className="text-xs text-slate-500 leading-relaxed mt-1">
-        {s.desc}
-      </p>
-    </div>
-  </Link>
-))}
-
+                        <div>
+                          <h4 className="font-bold text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
+                            {s.title}
+                          </h4>
+                          <p className="text-xs text-slate-500 leading-relaxed mt-1">
+                            {s.desc}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            <Link className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" href="/about">About</Link>
-            <Link className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" href="/work">Work</Link>
-            <Link className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" href="/why-us">Why Us</Link>
+            <Link
+              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              href="/about"
+            >
+              About
+            </Link>
+            <Link
+              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              href="/work"
+            >
+              Work
+            </Link>
+            <Link
+              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              href="/why-us"
+            >
+              Why Us
+            </Link>
           </div>
 
           {/* RIGHT ACTIONS */}
           <div className="flex items-center gap-4">
-            
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -186,7 +197,10 @@ export default function Navbar() {
               Start Project
             </MagneticButton>
 
-            <button className="md:hidden p-2" onClick={() => setIsMobileOpen(true)}>
+            <button
+              className="md:hidden p-2"
+              onClick={() => setIsMobileOpen(true)}
+            >
               <Menu size={24} />
             </button>
           </div>
@@ -223,7 +237,10 @@ export default function Navbar() {
                   transition={{ delay: index * 0.1 }}
                   className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 pb-6"
                 >
-                  <Link href={`/${item}`} onClick={() => setIsMobileOpen(false)}>
+                  <Link
+                    href={`/${item}`}
+                    onClick={() => setIsMobileOpen(false)}
+                  >
                     {item.charAt(0).toUpperCase() + item.slice(1)}
                   </Link>
                   <ArrowRight className="-rotate-45 text-slate-300" />

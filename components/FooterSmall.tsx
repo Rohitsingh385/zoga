@@ -8,7 +8,7 @@ export default function FooterSmall() {
         {/* Column 1 */}
         <div>
           <h2 className="text-2xl font-black mb-3">
-            <span className="text-purple-500">Zoga</span> Studios
+            <span className="text-purple-500">Avioni</span> Studios
           </h2>
           <p className="text-zinc-500 dark:text-zinc-400">
             Premium digital agency for Web, App, Video, SEO & Branding.
@@ -37,7 +37,7 @@ export default function FooterSmall() {
             <Link href="/about">About</Link>
             <Link href="/service">Services</Link>
             <Link href="/work">Work</Link>
-            <Link href="mailto:support@zoga.studio">Contact</Link>
+            <Link href="mailto:support@Avioni.studio">Contact</Link>
           </div>
         </div>
 
@@ -61,7 +61,7 @@ export default function FooterSmall() {
             Contact
           </h3>
           <p className="text-zinc-500 dark:text-zinc-400">
-            support@zoga.studio
+            support@Avioni.studio
             <br />
             +91 98765 43210
           </p>
@@ -69,7 +69,7 @@ export default function FooterSmall() {
       </div>
 
       <div className="text-center text-zinc-500 dark:text-zinc-500 mt-12">
-        © {new Date().getFullYear()} Zoga. All rights reserved.
+        © {new Date().getFullYear()} Avioni. All rights reserved.
       </div>
     </footer>
   );
