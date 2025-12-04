@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { Phone, X } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
 
 type Preset = {
   id: string;
@@ -15,13 +15,37 @@ const WHATSAPP_NUMBER = "+919835504582";
 const PHONE_NUMBER = "+919835504582";
 
 const presets: Preset[] = [
-  { id: "web-app", title: "Web & App Dev", message: "Hello! I'm interested in Web & App Development." },
-  { id: "web-design", title: "Web Design", message: "Hi — I'd like a modern website design." },
-  { id: "video-editing", title: "Video Editing", message: "Hello — I need video editing." },
+  {
+    id: "web-app",
+    title: "Web & App Dev",
+    message: "Hello! I'm interested in Web & App Development.",
+  },
+  {
+    id: "web-design",
+    title: "Web Design",
+    message: "Hi — I'd like a modern website design.",
+  },
+  {
+    id: "video-editing",
+    title: "Video Editing",
+    message: "Hello — I need video editing.",
+  },
   { id: "seo", title: "SEO", message: "Hi — I'm interested in SEO services." },
-  { id: "designing", title: "Designing", message: "Hello — I need branding & design assets." },
-  { id: "digital-marketing", title: "Digital Marketing", message: "Hi — I want digital marketing services." },
-  { id: "gmb", title: "GMB", message: "Hello — I need Google My Business optimization." }
+  {
+    id: "designing",
+    title: "Designing",
+    message: "Hello — I need branding & design assets.",
+  },
+  {
+    id: "digital-marketing",
+    title: "Digital Marketing",
+    message: "Hi — I want digital marketing services.",
+  },
+  {
+    id: "gmb",
+    title: "GMB",
+    message: "Hello — I need Google My Business optimization.",
+  },
 ];
 
 export default function FloatingButtons() {
@@ -51,11 +75,9 @@ export default function FloatingButtons() {
   return (
     <>
       <div className="fixed right-6 bottom-6 z-[9999] flex flex-col items-end gap-4">
-
         {/* DESKTOP POPUP */}
         {isOpen && (
           <div className="hidden md:block w-80 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-gray-300 dark:border-zinc-800 p-4 relative bottom-4 max-h-[70vh] overflow-y-auto">
-
             {/* Header */}
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
@@ -63,8 +85,12 @@ export default function FloatingButtons() {
                   <FaWhatsapp className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold dark:text-white">Zoga — Quick Chat</p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">Choose a topic or type your message</p>
+                  <p className="text-sm font-semibold dark:text-white">
+                    Avioni — Quick Chat
+                  </p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Choose a topic or type your message
+                  </p>
                 </div>
               </div>
 
@@ -84,8 +110,12 @@ export default function FloatingButtons() {
                   onClick={() => sendWhatsApp(p.message)}
                   className="w-full text-left px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
                 >
-                  <p className="text-sm font-medium dark:text-white">{p.title}</p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{p.message}</p>
+                  <p className="text-sm font-medium dark:text-white">
+                    {p.title}
+                  </p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    {p.message}
+                  </p>
                 </button>
               ))}
             </div>
@@ -112,7 +142,6 @@ export default function FloatingButtons() {
 
         {/* Floating Buttons */}
         <div className="flex flex-col items-end gap-3">
-
           {/* WHATSAPP BUTTON */}
           <button
             title="Chat with us"
@@ -121,7 +150,11 @@ export default function FloatingButtons() {
               bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/30 
               dark:shadow-green-900/40 hover:scale-105 transition"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <FaWhatsapp className="w-8 h-8" />}
+            {isOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <FaWhatsapp className="w-8 h-8" />
+            )}
           </button>
 
           {/* PHONE BUTTON */}
@@ -140,9 +173,7 @@ export default function FloatingButtons() {
       {/* MOBILE POPUP (NO BLUR) */}
       {isOpen && (
         <div className="fixed inset-0 z-[9998] md:hidden flex flex-col justify-end bg-black/40">
-
           <div className="bg-white dark:bg-zinc-900 rounded-t-2xl p-5 max-h-[75vh] overflow-y-auto border-t border-zinc-300 dark:border-zinc-800">
-
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -150,8 +181,12 @@ export default function FloatingButtons() {
                   <FaWhatsapp className="w-7 h-7" />
                 </div>
                 <div>
-                  <p className="text-base font-semibold dark:text-white">Start Chat</p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">Select topic or type below</p>
+                  <p className="text-base font-semibold dark:text-white">
+                    Start Chat
+                  </p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Select topic or type below
+                  </p>
                 </div>
               </div>
 
@@ -170,7 +205,9 @@ export default function FloatingButtons() {
                 className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 mb-2 text-left hover:bg-zinc-200 dark:hover:bg-zinc-700"
               >
                 <p className="text-sm font-medium dark:text-white">{p.title}</p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">{p.message}</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  {p.message}
+                </p>
               </button>
             ))}
 

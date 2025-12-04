@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Our Work & Portfolio - Web Development, App & Design Projects",
   description:
-    "Explore Zoga's portfolio of successful projects. From stunning websites to powerful mobile apps, SEO campaigns to brand transformations - see our work across diverse industries. Trusted by businesses from Ranchi to Mumbai, Delhi to Bangalore.",
+    "Explore Avioni's portfolio of successful projects. From stunning websites to powerful mobile apps, SEO campaigns to brand transformations - see our work across diverse industries. Trusted by businesses from Ranchi to Mumbai, Delhi to Bangalore.",
   keywords: [
     // Portfolio & Work
     "web development portfolio India",
@@ -41,28 +41,28 @@ export const metadata: Metadata = {
     "ROI digital marketing",
   ].join(", "),
   openGraph: {
-    title: "Our Work - Zoga Digital Agency Portfolio",
+    title: "Our Work - Avioni Digital Agency Portfolio",
     description:
       "Browse our portfolio of successful projects: websites, apps, SEO campaigns, and brand transformations across India. See the results we deliver.",
-    url: "https://zoga.agency/work",
+    url: "https://Avioni.agency/work",
     type: "website",
     images: [
       {
         url: "/og-work.png",
         width: 1200,
         height: 630,
-        alt: "Zoga Digital Agency Portfolio",
+        alt: "Avioni Digital Agency Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Our Work & Portfolio - Zoga Digital Agency",
+    title: "Our Work & Portfolio - Avioni Digital Agency",
     description:
       "Explore our portfolio of successful web development, app development, and digital marketing projects across India.",
   },
   alternates: {
-    canonical: "https://zoga.agency/work",
+    canonical: "https://Avioni.agency/work",
   },
 };
 
@@ -73,4 +73,3 @@ export default function WorkLayout({
 }) {
   return <>{children}</>;
 }
-

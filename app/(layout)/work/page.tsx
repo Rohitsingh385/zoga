@@ -20,6 +20,7 @@ import {
   Layers,
   Layout,
   Lightbulb,
+  Linkedin,
   MapPin,
   Megaphone,
   PenTool,
@@ -28,7 +29,7 @@ import {
   Smartphone,
   Star,
   TrendingUp,
-  Video,Linkedin,Instagram, Twitter, Facebook,
+  Video,
 } from "lucide-react";
 import Image from "next/image";
 import React, { useMemo, useRef, useState } from "react";
@@ -183,7 +184,7 @@ const REVIEWS = [
     name: "Elena Roderick",
     title: "CMO, FutureScale",
     quote:
-      "The ROI we saw from the SEO campaign was instant. Zoga literally put us on the map.",
+      "The ROI we saw from the SEO campaign was instant. Avioni literally put us on the map.",
   },
   {
     name: "Marcus Chen",
@@ -1022,7 +1023,7 @@ const PortfolioPage = ({ setView }: { setView: (view: string) => void }) => {
             </h2>
             <p className="text-xl text-zinc-400 mb-12 max-w-2xl mx-auto">
               Stop playing small. Join the roster of elite brands dominating
-              their industry with Zoga.
+              their industry with Avioni.
             </p>
             <button
               onClick={() => setView("contact")}
